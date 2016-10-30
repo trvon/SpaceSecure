@@ -14,6 +14,8 @@ The program is supportable on linux devices and an windows machine with a comman
 - [ ] Add support for more devices, with a quick and easy install
 - [ ] Add threading
 
+~ More organization coming soon 
+
 Authors
 - [GitHub] (https://github.com/Paxion42) Paxion42
 - [GitHub] (https://github.com/rahulr56) rahulr56
