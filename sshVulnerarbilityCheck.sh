@@ -35,9 +35,9 @@ if [ "$1" == "all" ];then
 	pingAll
 else
 	connect "$1"
-	if [ $? -eq 0 ]
-	then
-		return 0
-	fi
-	return 1
+	#if [ $? -eq 0 ]
+	#then
+	#	return 0
+	#fi
+	#return 1
 fi
