@@ -48,23 +48,6 @@ class k4tress_tk(Tkinter.Frame):
    		x = 0
    		# Code for any using information goes here
 
-    # Database entry search
-    def OnTreeSearchClick(self, event):
-        # iterates through the tree, and sets the selection to the item that
-        # matches selection provided
-        findItem = self.entryVariable.get()
-        treeContent = self.tree.get_children('')
-        for item in treeContent:
-            if str(item[1][0]) == findItem:
-                self.selection_set(item)
-
-    # Takes input from Password Text Box
-    # Find better fix for taking enter and button input
-    def PasswordEntry(self):
-        self.password = self.entryPassword.get()
-        # backend.updatePasswords((self.tree.item(currentFocus)['values'][0], password))
-        # should indicate this some other way since the button is reclickable
-        # self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
         
     def PasswordEnter(self, event):
         self.password = self.entryPassword.get()
@@ -90,11 +73,13 @@ class k4tress_tk(Tkinter.Frame):
         global findItem
         findItem = self.entryVariable.get()
         notFound = True
-        treeContent = self.tree.get_children('')
-        for item in treeContent:
-            if str(item['values'][0]) == findItem:
-                self.tree.focus(item)
-                notFound = False
+        treeContent = self.tree.get_children()
+        for branch in treeContent:
+        	for node in range(0, 3):
+        		if self.tree.item(branch)["values"][node] == findItem:
+        			self.tree.selection_set(branch)
+        			notFound = False
+
         if notFound:
         	self.searchResult
 
@@ -161,7 +146,7 @@ class k4tress_tk(Tkinter.Frame):
 
         # Button to Submit password to Devices in SQL Database
         button = Tkinter.Button(
-            self.parent, text=u"Submit Password", command=self.PasswordEntry)
+            self.parent, text=u"Submit Password", command=self.PasswordEnter)
         button.grid(column=3, columnspan=2, row=3, sticky='swe')
         self.entry.bind("<Return>", self.PasswordEnter)
 
