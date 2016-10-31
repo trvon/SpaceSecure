@@ -37,18 +37,17 @@ class k4tress_tk(Tkinter.Frame):
         # File Menu
 
         if fm != ' ':
-        	self.script = self.readscript(fm)
+            self.script = self.readscript(fm)
 
     # Should probally pass file to the backend
     def readscript(self, filename):
-    	f = open(filename, "r")
-    	# TODO with script
-   	
-   	def info():
-   		x = 0
-   		# Code for any using information goes here
+        f = open(filename, "r")
+        # TODO with script
 
-        
+        def info():
+            x = 0
+            # Code for any using information goes here
+
     def PasswordEnter(self, event):
         self.password = self.entryPassword.get()
         # backend.updatePasswords((self.tree.item(currentFocus)['values'][0], password))
@@ -56,7 +55,14 @@ class k4tress_tk(Tkinter.Frame):
         # self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
 
     def searchResult():
-    	self.variable.set("Sorry, item not found!")
+        self.variable.set("Sorry, item not found!")
+
+    def searchItem(self, branch, findItem):
+        compare = False
+        if self.tree.item(branch)["values"][0] == findItem or self.tree.item(branch)["values"][1] == findItem or self.tree.item(branch)["values"][2] == findItem:
+            compare = True
+
+        return compare
 
     # hides all secure entries from the tree
     def OnHideClick(self):
@@ -75,13 +81,12 @@ class k4tress_tk(Tkinter.Frame):
         notFound = True
         treeContent = self.tree.get_children()
         for branch in treeContent:
-        	for node in range(0, 3):
-        		if self.tree.item(branch)["values"][node] == findItem:
-        			self.tree.selection_set(branch)
-        			notFound = False
+            if self.searchItem(branch, findItem):
+                self.tree.selection_set(branch)
+                notFound = False
 
         if notFound:
-        	self.searchResult
+            self.searchResult
 
     # Some Appearance modifications
     def createWidgits(self):
@@ -108,7 +113,8 @@ class k4tress_tk(Tkinter.Frame):
 
         # iterates over inputlist and inserts it all into the tree
         for entry in self.treeContents:
-            self.tree.insert("", 0, value=(entry[0], entry[1], entry[2], entry[3]))
+            self.tree.insert(
+                "", 0, value=(entry[0], entry[1], entry[2], entry[3]))
 
     def initialize(self):
         # Appearance
@@ -128,10 +134,12 @@ class k4tress_tk(Tkinter.Frame):
         # Search Bar
         # Device Search Entry Field
         self.entryVariable = Tkinter.StringVar()
-        self.entry = Tkinter.Entry(self.parent, textvariable=self.entryVariable)
+        self.entry = Tkinter.Entry(
+            self.parent, textvariable=self.entryVariable)
 
         # Search and Status of Search
-        Label(self.parent, textvariable=self.variable, relief=Tkinter.SUNKEN, font=self.bigFont).grid(row=0, column=0, sticky='wnes')
+        Label(self.parent, textvariable=self.variable, relief=Tkinter.SUNKEN,
+              font=self.bigFont).grid(row=0, column=0, sticky='wnes')
         self.entry.grid(column=3, columnspan=2, row=0, sticky='nesw')
 
         self.entry.bind("<Return>", self.SearchOnEnter)
@@ -180,7 +188,7 @@ class k4tress_tk(Tkinter.Frame):
 def main():
     root = Tkinter.Tk()
     root.geometry('{}x{}'.format(750, 280))
-    d=k4tress_tk(root)
+    d = k4tress_tk(root)
     root.mainloop()
 
 if __name__ == "__main__":
