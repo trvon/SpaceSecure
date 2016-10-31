@@ -186,15 +186,15 @@ class k4tress_tk(Tkinter.Frame):
         self.tree.heading("Security", text="Secure")
         # Column Settings Continued
         self.tree.column('#0', width=0)
-        self.tree.column("IP", stretch=True, width=50)
-        self.tree.column("MAC Address", stretch=True, width=100)
+        self.tree.column("IP", stretch=True, width=90)
+        self.tree.column("MAC Address", stretch=True)
         self.tree.column("Device", stretch=True)
-        self.tree.column("Security", stretch=True, width=70)
+        self.tree.column("Security", stretch=True, width=80)
 
 
 def main():
     root = Tkinter.Tk()
-    root.geometry('{}x{}'.format(750, 260))
+    root.geometry('{}x{}'.format(750, 280))
     d=k4tress_tk(root)
     root.mainloop()
 
