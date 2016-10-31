@@ -1,3 +1,4 @@
+# Brute force SSH to specified IP with all the credential in credentials.txt
 function connect
 {
     ip=$1;
@@ -14,7 +15,7 @@ function connect
     done  < $CREDENTIALS_LIST_FILE
 	return 1
 }
-
+# Checks vulnerability of all devices found by discoverDevices.sh
 function pingAll
 {
 	bash ./discoverDevices.sh
@@ -31,6 +32,8 @@ if [ $# -lt 1 ];then
 	echo "Usage $0 [<ip address>|all]"
 	exit 1
 fi
+
+
 if [ "$1" == "all" ];then
 	pingAll
 else
