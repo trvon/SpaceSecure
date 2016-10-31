@@ -4,7 +4,7 @@
 import Tkinter
 import tkFileDialog
 
-from Tkinter import Frame, Tk, Menu
+from Tkinter import Frame, Label, Menu
 
 import ttk
 import tkFont
@@ -20,6 +20,7 @@ class k4tress_tk(Tkinter.Frame):
         global treeContent
 
         Tkinter.Frame.__init__(self, parent)
+        self.variable = Tkinter.StringVar()
         self.parent = parent
         self.initialize()
         self.createWidgits()
@@ -37,8 +38,6 @@ class k4tress_tk(Tkinter.Frame):
 
         if fm != ' ':
         	self.script = self.readscript(fm)
-        # self.txt.insert(END, text) My need if causing problems
-
 
     # Should probally pass file to the backend
     def readscript(self, filename):
@@ -73,6 +72,9 @@ class k4tress_tk(Tkinter.Frame):
         # should indicate this some other way since the button is reclickable
         # self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
 
+    def searchResult():
+    	self.variable.set("Sorry, item not found!")
+
     # hides all secure entries from the tree
     def OnHideClick(self):
         for item in self.treeContent:
@@ -83,28 +85,18 @@ class k4tress_tk(Tkinter.Frame):
 
     # Both Search Function and onButtonClick do the same thing
     # Search Function
+    # self.tree.item(currentFocus)['values'][0],self.entryVariable.get()
     def SearchOnEnter(self, event):
         global findItem
         findItem = self.entryVariable.get()
+        notFound = True
         treeContent = self.tree.get_children('')
         for item in treeContent:
             if str(item['values'][0]) == findItem:
                 self.tree.focus(item)
-        # self.tree.item(currentFocus)['values'][0],self.entryVariable.get()
-    
-    # On Button Click Activity
-    def OnButtonClick(self):
-        global findItem
-        findItem = self.entryVariable.get()
-        treeContent = self.tree.get_children('')
-        for item in treeContent:
-            if str(item['values'][0]) == findItem:
-                self.tree.focus(item)
-        # backend.updatePasswords((self.tree.item(currentFocus)['values'][0],self.entryVariable.get()))
-        # should indicate this some other way since the button is reclickable
-        # self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
-        # print
-        # self.tree.item(currentFocus)['values'][0],self.entryVariable.get()
+                notFound = False
+        if notFound:
+        	self.searchResult
 
     # Some Appearance modifications
     def createWidgits(self):
@@ -113,13 +105,14 @@ class k4tress_tk(Tkinter.Frame):
         top.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1, uniform=True)
-
+        self.variable.set("Search Ready")
         # Menu Functionality
         # Functionality for importing script
         self.menubar = Menu(master=self)
         self.filemenu = Menu(self.menubar, tearoff=0)
 
-        self.menubar.add_cascade(label="Secrets", menu=self.filemenu)
+        self.menubar.add_command(label="Scan", command=self.OnScan)
+        self.menubar.add_cascade(label="Options", menu=self.filemenu)
         self.filemenu.add_command(label="Scripts", command=self.script)
         self.filemenu.add_command(label="Info", command=self.info)
 
@@ -137,7 +130,7 @@ class k4tress_tk(Tkinter.Frame):
         self.bigFont = tkFont.Font(family='times', size=13)
         self.option_add('*Button*font', self.bigFont)
 
-        self.parent.resizable(False, False)
+        self.parent.resizable(True, True)
         self.parent.grid_rowconfigure(0, weight=1)
         self.parent.title("SpaceSecure")
         self.grid_columnconfigure(0, weight=1)
@@ -147,65 +140,43 @@ class k4tress_tk(Tkinter.Frame):
             'IP', 'MAC Address', 'Device', 'Security'), show="headings")
         self.treeview = self.tree
 
-        #
         # Search Bar
         # Device Search Entry Field
         self.entryVariable = Tkinter.StringVar()
-        self.entry = Tkinter.Entry(
-            self.parent, textvariable=self.entryVariable)
-        self.entry.grid(column=0, columnspan=3, rowspan=1, row=0,
-                        sticky=Tkinter.W + Tkinter.E + Tkinter.N + Tkinter.S)
+        self.entry = Tkinter.Entry(self.parent, textvariable=self.entryVariable)
+
+        # Search and Status of Search
+        Label(self.parent, textvariable=self.variable, relief=Tkinter.SUNKEN, font=self.bigFont).grid(row=0, column=0, sticky='wnes')
+        self.entry.grid(column=3, columnspan=2, row=0, sticky='nesw')
+
         self.entry.bind("<Return>", self.SearchOnEnter)
 
-        # Button to search for Devices in SQL Database
-        button = Tkinter.Button(
-            self.parent, text=u"Search Devices", command=self.OnButtonClick)
-        button.grid(column=3, columnspan=2, rowspan=1, row=0,
-                    sticky=Tkinter.W + Tkinter.E + Tkinter.N + Tkinter.S)
-
-        #
-        # Starts Scan Script
-        # Button to Search f +r devices
-        search = Tkinter.Button(self.parent, text=u"Scan", command=self.OnScan)
-        search.grid(
-            column=3, columnspan=2, row=1, sticky=Tkinter.W + Tkinter.E + Tkinter.N)
-
-        #
         # Password Field
         # Password Entry Field
         self.entryPassword = Tkinter.StringVar()
         self.entry = Tkinter.Entry(
             self.parent, textvariable=self.entryPassword)
-        self.entry.grid(column=3, row=4, columnspan=1,
-                        sticky=Tkinter.W + Tkinter.E + Tkinter.N + Tkinter.S)
+        self.entry.grid(column=3, row=4, columnspan=2, sticky='new')
         self.entryPassword.set(u"Enter New Password!")
 
         # Button to Submit password to Devices in SQL Database
         button = Tkinter.Button(
             self.parent, text=u"Submit Password", command=self.PasswordEntry)
-        button.grid(column=2, columnspan=1, row=4,
-                    sticky=Tkinter.W + Tkinter.E + Tkinter.N + Tkinter.S)
+        button.grid(column=3, columnspan=2, row=3, sticky='swe')
         self.entry.bind("<Return>", self.PasswordEnter)
 
-        # Auto selects the text field
-        self.entry.focus_set()
-        self.entry.selection_range(0, Tkinter.END)
-
-        #
         # Secure Toggle
         # Button to hide secure entries, cleaning up the view
         hide = Tkinter.Button(
-            self.parent, text=u"Toggle Secure View", command=self.OnHideClick)
+            self.parent, text=u"Toggle Secure View", command=self.OnHideClick,)
         # may need to reposition button within GUI
-        hide.grid(column=3, columnspan=2, rowspan=1, row=3,
-                  sticky=Tkinter.W + Tkinter.E + Tkinter.S)
+        hide.grid(column=3, columnspan=2, row=1, sticky='nwe')
 
-        #
-        #   TREE/DATABASE CONFIG
+        # TREE/DATABASE CONFIG
         # Tree scroll bar
         verticle = ttk.Scrollbar(orient='vertical', command=self.tree.yview)
         verticle.grid(row=1, rowspan=3, column=2, sticky='nes')
-        self.tree.grid(row=1, rowspan=3, columnspan=3, sticky='news')
+        self.tree.grid(row=1, column=0, rowspan=3, columnspan=3, sticky='news')
         self.tree.configure(yscrollcommand=verticle.set)
 
         # Columnn Customization
@@ -213,17 +184,17 @@ class k4tress_tk(Tkinter.Frame):
         self.tree.heading("IP", text="IP")
         self.tree.heading("MAC Address", text="MAC Address")
         self.tree.heading("Security", text="Secure")
-
+        # Column Settings Continued
         self.tree.column('#0', width=0)
         self.tree.column("IP", stretch=True, width=50)
-        self.tree.column("MAC Address", stretch=True)
+        self.tree.column("MAC Address", stretch=True, width=100)
         self.tree.column("Device", stretch=True)
-        self.tree.column("Security", stretch=True, width=50)
+        self.tree.column("Security", stretch=True, width=70)
 
 
 def main():
     root = Tkinter.Tk()
-    root.geometry('{}x{}'.format(1000, 300))
+    root.geometry('{}x{}'.format(750, 260))
     d=k4tress_tk(root)
     root.mainloop()
 
