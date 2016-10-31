@@ -3,7 +3,7 @@
 ## Idea
 The motivation behind SpaceSecure was to give network savvy and regular people an easy way to scan their network for vunerable IoT devices. SpaceSecure then tries to gain root access to the vunerable devices by trying to brute using defualt passwords and any similar hacker exploit imported into the code. Then when the program verifies root access and it gives the owner the option to change of devices password to something more secure. 
 
-When the network is scanned, it shows every devices on the network, and we hope this inspires individuals to be more safe on the web.
+With other devices test against exploits, it gives administrators a head start on patching devices that were previously unknown to be vunerable to the exploits tested them. We hope this inspires individuals to be more safe on the web, and to update freqently.
 
 ## To Integrate
 Drammer: A bot used to control android devices. More info on this can be found on 1) https://www.vusec.net/projects/drammer/ 2) https://vvdveen.com/publications/drammer.pdf
