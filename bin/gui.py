@@ -37,6 +37,8 @@ class k4tress_tk(Tkinter.Frame):
 
         if fm != ' ':
         	self.script = self.readscript(fm)
+        # self.txt.insert(END, text) My need if causing problems
+
 
     # Should probally pass file to the backend
     def readscript(self, filename):
