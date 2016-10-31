@@ -86,7 +86,7 @@ def getDeviceList():
 
     # opens output recieved from script
     outputFile = open('connectedDevices.txt', 'r')
-    returnList = [()]
+    returnList = []
     # iterates through the output file and pulls individaul info
     for row in outputFile:
         counter = 0
@@ -104,6 +104,7 @@ def getDeviceList():
         counter += 1
     thirdString = row[startpoint:counter]
     returnList.append([firstString, secondString, thirdString, 'untested'])
+    print returnList
     outputFile.close()
     return returnList
 
