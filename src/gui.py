@@ -1,11 +1,16 @@
-#!/usr/bin/python
+# !/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
 import Tkinter
+import tkFileDialog
+
+from Tkinter import Frame, Tk, Menu
+
 import ttk
 import tkFont
 
 import backend
+
 
 class k4tress_tk(Tkinter.Frame):
 
@@ -20,6 +25,30 @@ class k4tress_tk(Tkinter.Frame):
         self.createWidgits()
         backend.initialSetup()
 
+        # Menu Support
+        self.master.config(menu=self.menubar)
+
+    def script(self):
+        # Code for importing scripts goes here
+        self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh')]
+        dlg = tkFileDialog.Open(self, filetypes=self.ftypes)
+        fm = dlg.show()
+        # File Menu
+
+        if fm != ' ':
+        	self.script = self.readscript(fm)
+        # self.txt.insert(END, text) My need if causing problems
+
+
+    # Should probally pass file to the backend
+    def readscript(self, filename):
+    	f = open(filename, "r")
+    	# TODO with script
+   	
+   	def info():
+   		x = 0
+   		# Code for any using information goes here
+
     # Database entry search
     def OnTreeSearchClick(self, event):
         # iterates through the tree, and sets the selection to the item that
@@ -27,64 +56,53 @@ class k4tress_tk(Tkinter.Frame):
         findItem = self.entryVariable.get()
         treeContent = self.tree.get_children('')
         for item in treeContent:
-            print item
             if str(item[1][0]) == findItem:
-                print item
                 self.selection_set(item)
 
-    #
-    # Takes input from Password Text Box on both enter ra button Press
+    # Takes input from Password Text Box
+    # Find better fix for taking enter and button input
     def PasswordEntry(self):
-        password = self.entryPassword.get()
-
+        self.password = self.entryPassword.get()
+        # backend.updatePasswords((self.tree.item(currentFocus)['values'][0], password))
+        # should indicate this some other way since the button is reclickable
+        # self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
+        
     def PasswordEnter(self, event):
-        password = self.entryPassword.get()
+        self.password = self.entryPassword.get()
+        # backend.updatePasswords((self.tree.item(currentFocus)['values'][0], password))
+        # should indicate this some other way since the button is reclickable
+        # self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
 
-    #
+    # hides all secure entries from the tree
+    def OnHideClick(self):
+        for item in self.treeContent:
+            if backend.secureTest(item['values'][0]):
+                item['values'][3] = "Secured"
+            else:
+                item['values'][3] = "Unsecured"
+
+    # Both Search Function and onButtonClick do the same thing
     # Search Function
     def SearchOnEnter(self, event):
         global findItem
         findItem = self.entryVariable.get()
         treeContent = self.tree.get_children('')
         for item in treeContent:
-            print item
-            if str(item[1][0]) == findItem:
-                print item
+            if str(item['values'][0]) == findItem:
                 self.tree.focus(item)
-        # backend.updatePasswords((self.tree.item(currentFocus)['values'][0],self.entryVariable.get()))
-        # should indicate this some other way since the button is reclickable
-        #self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
-
-        # Auto selects the text field
-        self.entry.focus_set()
-        self.entry.selection_range(0, Tkinter.END)
-        # print
         # self.tree.item(currentFocus)['values'][0],self.entryVariable.get()
-
-    # hides all secure entries from the tree
-    def OnHideClick(self):
-        for item in self.treeContent:
-            if backend.secureTest(item['values'][0]):
-                eitem['values'][3] = "Secured"
-            else:
-                item['values'][3] = "Unsecured"
-
+    
     # On Button Click Activity
     def OnButtonClick(self):
         global findItem
         findItem = self.entryVariable.get()
         treeContent = self.tree.get_children('')
         for item in treeContent:
-            if str(item[1][0]) == findItem:
+            if str(item['values'][0]) == findItem:
                 self.tree.focus(item)
         # backend.updatePasswords((self.tree.item(currentFocus)['values'][0],self.entryVariable.get()))
         # should indicate this some other way since the button is reclickable
-        #self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
-
-        # Auto s-elects the text field
-        self.entry.focus_set()
-        self.entry.selection_range(0, Tkinter.END)
-
+        # self.labelVariable.set(self.entryVariable.get() + "Submitted the password!")
         # print
         # self.tree.item(currentFocus)['values'][0],self.entryVariable.get()
 
@@ -96,15 +114,23 @@ class k4tress_tk(Tkinter.Frame):
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1, uniform=True)
 
+        # Menu Functionality
+        # Functionality for importing script
+        self.menubar = Menu(master=self)
+        self.filemenu = Menu(self.menubar, tearoff=0)
+
+        self.menubar.add_cascade(label="Secrets", menu=self.filemenu)
+        self.filemenu.add_command(label="Scripts", command=self.script)
+        self.filemenu.add_command(label="Info", command=self.info)
+
     def OnScan(self):
-        treeContents = backend.getDeviceList()
+        self.treeContents = backend.getDeviceList()
         for i in self.tree.get_children():
             self.tree.delete(i)
 
         # iterates over inputlist and inserts it all into the tree
-        for entry in treeContents:
-            self.tree.insert(
-                "", "end", value=(entry[0], entry[1], entry[2], entry[3]))
+        for entry in self.treeContents:
+            self.tree.insert("", 0, value=(entry[0], entry[1], entry[2], entry[3]))
 
     def initialize(self):
         # Appearance
@@ -113,7 +139,7 @@ class k4tress_tk(Tkinter.Frame):
 
         self.parent.resizable(False, False)
         self.parent.grid_rowconfigure(0, weight=1)
-        self.parent.title("K4TRESS")
+        self.parent.title("SpaceSecure")
         self.grid_columnconfigure(0, weight=1)
 
         # Tree Building
@@ -128,7 +154,7 @@ class k4tress_tk(Tkinter.Frame):
         self.entry = Tkinter.Entry(
             self.parent, textvariable=self.entryVariable)
         self.entry.grid(column=0, columnspan=3, rowspan=1, row=0,
-                        sticky=Tkinter.W+Tkinter.E + Tkinter.N + Tkinter.S)
+                        sticky=Tkinter.W + Tkinter.E + Tkinter.N + Tkinter.S)
         self.entry.bind("<Return>", self.SearchOnEnter)
 
         # Button to search for Devices in SQL Database
@@ -151,7 +177,7 @@ class k4tress_tk(Tkinter.Frame):
         self.entry = Tkinter.Entry(
             self.parent, textvariable=self.entryPassword)
         self.entry.grid(column=3, row=4, columnspan=1,
-                        sticky=Tkinter.W+Tkinter.E + Tkinter.N + Tkinter.S)
+                        sticky=Tkinter.W + Tkinter.E + Tkinter.N + Tkinter.S)
         self.entryPassword.set(u"Enter New Password!")
 
         # Button to Submit password to Devices in SQL Database
@@ -198,9 +224,8 @@ class k4tress_tk(Tkinter.Frame):
 def main():
     root = Tkinter.Tk()
     root.geometry('{}x{}'.format(1000, 300))
-    d = k4tress_tk(root)
+    d=k4tress_tk(root)
     root.mainloop()
-
 
 if __name__ == "__main__":
     main()
