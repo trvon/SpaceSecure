@@ -2,6 +2,8 @@
 # -*- coding: iso-8859-1 -*-
 
 import Tkinter
+from Tkinter import *
+
 import ttk
 import tkFont
 
@@ -20,6 +22,16 @@ class k4tress_tk(Tkinter.Frame):
         self.initialize()
         self.createWidgits()
         backend.initialSetup()
+
+        self.master.config(menu=self.menubar)
+
+    def script():
+        # Code for importing scripts goes here
+        x = 0
+
+    def info():
+        # Code for any using information goes here
+        x = 0
 
     # Database entry search
     def OnTreeSearchClick(self, event):
@@ -46,8 +58,7 @@ class k4tress_tk(Tkinter.Frame):
         findItem = self.entryVariable.get()
         treeContent = self.tree.get_children('')
         for item in treeContent:
-            print item
-            if str(item[1][0]) == findItem:
+            if str(item.index(0)) == findItem:
                 print item
                 self.tree.focus(item)
         # backend.updatePasswords((self.tree.item(currentFocus)['values'][0],self.entryVariable.get()))
@@ -64,7 +75,7 @@ class k4tress_tk(Tkinter.Frame):
     def OnHideClick(self):
         for item in self.treeContent:
             if backend.secureTest(item['values'][0]):
-                eitem['values'][3] = "Secured"
+                item['values'][3] = "Secured"
             else:
                 item['values'][3] = "Unsecured"
 
@@ -74,7 +85,7 @@ class k4tress_tk(Tkinter.Frame):
         findItem = self.entryVariable.get()
         treeContent = self.tree.get_children('')
         for item in treeContent:
-            if str(item[1][0]) == findItem:
+            if str(item.index(1)) == findItem:
                 self.tree.focus(item)
         # backend.updatePasswords((self.tree.item(currentFocus)['values'][0],self.entryVariable.get()))
         # should indicate this some other way since the button is reclickable
@@ -95,6 +106,15 @@ class k4tress_tk(Tkinter.Frame):
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1, uniform=True)
 
+        # Menu Functionality
+        # Functionality for importing script
+        self.menubar = Menu(master=self)
+        self.filemenu = Menu(self.menubar, tearoff=0)
+
+        self.menubar.add_cascade(label="Secrets", menu=self.filemenu)
+        self.filemenu.add_command(label="Scripts", command=self.script)
+        self.filemenu.add_command(label="Info", command=self.info)
+
     def OnScan(self):
         self.treeContents = backend.getDeviceList()
         for i in self.tree.get_children():
@@ -102,7 +122,7 @@ class k4tress_tk(Tkinter.Frame):
 
         # iterates over inputlist and inserts it all into the tree
         for entry in self.treeContents:
-            self.tree.insert("",0, value=(entry[0], entry[1], entry[2], entry[3]) )
+            self.tree.insert("", 0, value=(entry[0], entry[1], entry[2], entry[3]) )
 
     def initialize(self):
         # Appearance
@@ -198,7 +218,6 @@ def main():
     root.geometry('{}x{}'.format(1000, 300))
     d=k4tress_tk(root)
     root.mainloop()
-
 
 if __name__ == "__main__":
     main()
