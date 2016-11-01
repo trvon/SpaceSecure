@@ -205,7 +205,7 @@ class k4tress_tk(Tkinter.Frame):
         # Column Settings Continued
         self.tree.column('#0', width=0)
         self.tree.column("IP", stretch=True, width=95)
-        self.tree.column("MAC Address", stretch=True)
+        self.tree.column("MAC Address", stretch=True, width=120)
         self.tree.column("Device", stretch=True)
         self.tree.column("Security", stretch=True, width=80)
 
