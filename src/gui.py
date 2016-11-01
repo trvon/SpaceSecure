@@ -21,7 +21,7 @@ class k4tress_tk(Tkinter.Frame):
         Tkinter.Frame.__init__(self, parent)
         self.variable = Tkinter.StringVar()
         self.parent = parent
-
+        self.grid(sticky='nwes')
         self.initialize()
         self.createWidgits()
         backend.initialSetup()
@@ -111,9 +111,13 @@ class k4tress_tk(Tkinter.Frame):
     # Some Appearance modifications
     def createWidgits(self):
         top = self.winfo_toplevel()
-        top.rowconfigure(0, weight=1)
+        top.rowconfigure(3, weight=1)
+        top.columnconfigure(3, weight=1)
+        # Resizable settings
         top.columnconfigure(0, weight=1)
-        self.rowconfigure(0, weight=1)
+        top.rowconfigure(0, weight=0)
+        top.columnconfigure(3, weight=0)
+
         self.columnconfigure(0, weight=1, uniform=True)
         self.variable.set('Search Ready!')
         # Menu Functionality
@@ -142,9 +146,9 @@ class k4tress_tk(Tkinter.Frame):
         self.option_add('*Button*font', self.bigFont)
         # Main from settings
         self.parent.resizable(True, True)
-        self.parent.grid_rowconfigure(0, weight=1)
+        self.parent.grid_rowconfigure(0, weight=3)
         self.parent.title("SpaceSecure")
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1, minsize=25)
         # Tree Building
         self.tree = ttk.Treeview(selectmode="extended", columns=(
             'IP', 'MAC Address', 'Device', 'Security'), show="headings")
@@ -159,7 +163,7 @@ class k4tress_tk(Tkinter.Frame):
         Label(self.parent, textvariable=self.variable, relief=Tkinter.SUNKEN,
               font=self.bigFont).grid(row=0, column=0, sticky='wnes')
         self.entry.grid(
-            column=3, columnspan=2, row=0, rowspan=1, sticky='nesw')
+            column=1, columnspan=4, row=0, rowspan=1, sticky='nesw')
         self.entry.bind('<Enter>', self.defaultSearch)
         self.entry.bind('<Return>', self.SearchOnEnter)
 
@@ -200,7 +204,7 @@ class k4tress_tk(Tkinter.Frame):
         self.tree.heading("Security", text="Secure")
         # Column Settings Continued
         self.tree.column('#0', width=0)
-        self.tree.column("IP", stretch=True, width=90)
+        self.tree.column("IP", stretch=True, width=95)
         self.tree.column("MAC Address", stretch=True)
         self.tree.column("Device", stretch=True)
         self.tree.column("Security", stretch=True, width=80)
