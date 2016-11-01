@@ -15,20 +15,38 @@ function trap_ctrlc
     exit 130
 }
 
+function checkCompatability
+{
+    #Check if arp-scan is installed on the system
+    which arp-scan > /dev/null
+    if [ $? -ne 0 ];then
+        echo "Install arp-scan and then try again!"
+        exit 1
+    fi
+
+    #check if sshpass is installed on the system
+    which sshpass > /dev/null
+    if [ $? -ne 0 ];then
+        echo "Install sshpass and then try again!"
+        exit 0
+    fi
+}
+
 function main
 {
-	#Set up a trap to do clean up when the user presses Ctrl+C
-	trap "trap_ctrlc" 2
+    #Set up a trap to do clean up when the user presses Ctrl+C
+    trap "trap_ctrlc" 2
+    
+    checkCompatability
+    #Compile all python files and move it to build Directory
+    python -m compileall ../src/
+    mv -f ../src/*.pyc .
+    
+    #Start the Application
+    python gui.pyc 2>/dev/null
 
-	#Compile all python files and move it to build Directory
-	python -m compileall ../src/
-	mv ../src/*.pyc .
-	
-	#Start the Application
-	python gui.pyc 2>/dev/null
-
-	#Normal Clean Up once the application is closed
-	rm -rf *.pyc *.txt
+    #Normal Clean Up once the application is closed
+    rm -rf *.pyc *.txt
 }
 
 
