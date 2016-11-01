@@ -90,20 +90,21 @@ def getDeviceList():
     # iterates through the output file and pulls individaul info
     for row in outputFile:
         counter = 0
-    while row[counter] != '\t':
+        while row[counter] != '\t':
+            counter += 1
+        firstString = row[:counter]
+        startpoint = counter
         counter += 1
-    firstString = row[:counter]
-    startpoint = counter
-    counter += 1
-    while row[counter] != '\t':
+        while row[counter] != '\t':
+            counter += 1
+            secondString = row[startpoint:counter]
+        startpoint = counter
         counter += 1
-        secondString = row[startpoint:counter]
-    startpoint = counter
-    counter += 1
-    while row[counter] != '\n':
-        counter += 1
-    thirdString = row[startpoint:counter]
-    returnList.append([firstString, secondString, thirdString, 'untested'])
+        while row[counter] != '\n':
+            counter += 1
+        thirdString = row[startpoint:counter]
+        returnList.append(
+            [firstString.strip(), secondString.strip(), thirdString.strip(), 'untested'])
     outputFile.close()
     return returnList
 
@@ -113,7 +114,7 @@ def getDeviceList():
 
 
 def secureTest(target):
-    if os.system("~/scripts/sshVulnerarbilityCheck.sh " + target) == 1:
+    if os.system("~/scripts/.sshVulnerarbilityCheck.sh") == 1:
         return True
     else:
         return False
