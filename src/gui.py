@@ -62,9 +62,11 @@ class k4tress_tk(Tkinter.Frame):
                                "Submitted the password!")
 
     # Search Bar alert functions
-    #
     def searchResult(self):
         self.variable.set('Sorry, item not found!')
+
+    def defaultSearch(self, event):
+        self.variable.set('Search Ready!')
 
     # Condense the compare of search
     def searchItem(self, branch, findItem):
@@ -75,7 +77,6 @@ class k4tress_tk(Tkinter.Frame):
         if (columnOne.startswith(findItem) or columnTwo.startswith(findItem) or
                 columnThree.startswith(findItem)):
             compare = True
-
         return compare
 
     # Search Function
@@ -101,6 +102,12 @@ class k4tress_tk(Tkinter.Frame):
             else:
                 self.tree.item(item)["values"][3] = "Unsecured"
 
+    def vunerableDevice(self):
+        x = 0
+        # self.variable.set()
+        # Add function where label is set to Username and Password
+        # Scripted used to successfully get into device
+
     # Some Appearance modifications
     def createWidgits(self):
         top = self.winfo_toplevel()
@@ -108,7 +115,7 @@ class k4tress_tk(Tkinter.Frame):
         top.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1, uniform=True)
-        self.variable.set('Search Ready')
+        self.variable.set('Search Ready!')
         # Menu Functionality
         # Functionality for importing script
         self.menubar = Menu(master=self)
@@ -153,7 +160,8 @@ class k4tress_tk(Tkinter.Frame):
               font=self.bigFont).grid(row=0, column=0, sticky='wnes')
         self.entry.grid(
             column=3, columnspan=2, row=0, rowspan=1, sticky='nesw')
-        self.entry.bind("<Return>", self.SearchOnEnter)
+        self.entry.bind('<Enter>', self.defaultSearch)
+        self.entry.bind('<Return>', self.SearchOnEnter)
 
         # Password Field
         # Password Entry Field
