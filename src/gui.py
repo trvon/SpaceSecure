@@ -59,20 +59,16 @@ class k4tress_tk(Tkinter.Frame):
 
     def searchItem(self, branch, findItem):
         compare = False
-        if self.tree.item(branch)["values"][0] == findItem or self.tree.item(branch)["values"][1] == findItem or self.tree.item(branch)["values"][2] == findItem:
+
+        columnOne = self.tree.item(branch)["values"][0]
+        columnTwo = self.tree.item(branch)["values"][1]
+        columnThree = self.tree.item(branch)["values"][2]
+
+        if columnOne.startswith(findItem) or columnTwo.startswith(findItem) or columnThree.startswith(findItem):
             compare = True
 
         return compare
 
-    # hides all secure entries from the tree
-    def OnHideClick(self):
-        for item in self.treeContent:
-            if backend.secureTest(item['values'][0]):
-                item['values'][3] = "Secured"
-            else:
-                item['values'][3] = "Unsecured"
-
-    # Both Search Function and onButtonClick do the same thing
     # Search Function
     # self.tree.item(currentFocus)['values'][0],self.entryVariable.get()
     def SearchOnEnter(self, event):
@@ -87,6 +83,14 @@ class k4tress_tk(Tkinter.Frame):
 
         if notFound:
             self.searchResult
+
+    # hides all secure entries from the tree
+    def OnHideClick(self):
+        for item in self.tree.get_children():
+            if backend.secureTest(self.tree.item(item)["values"][0]):
+                self.tree.item(item)["values"][3] = "Secured"
+            else:
+                self.tree.item(item)["values"][3] = "Unsecured"
 
     # Some Appearance modifications
     def createWidgits(self):
