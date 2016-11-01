@@ -82,7 +82,7 @@ def initialSetup():
 # and their security status
 def getDeviceList():
     # calls the SH script that scans the network
-    os.system("~/scripts/.discoverDevices.sh")
+    os.system("./scripts/discoverDevices.sh")
 
     # opens output recieved from script
     outputFile = open('connectedDevices.txt', 'r')
@@ -114,7 +114,7 @@ def getDeviceList():
 
 
 def secureTest(target):
-    if os.system("~/scripts/.sshVulnerarbilityCheck.sh") == 1:
+    if os.system("./scripts/sshVulnerarbilityCheck.sh") == 1:
         return True
     else:
         return False
