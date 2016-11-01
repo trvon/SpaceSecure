@@ -62,7 +62,7 @@ def __commonAuthSetup():
 
 
 def loadCredFromFile():
-    file = open("~/credentials.txt", "r")
+    file = open("./credentials.txt", "r")
     for line in file:
         cred = line.split()
         authPairs.append([cred[0], cred[1]])

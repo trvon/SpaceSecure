@@ -16,7 +16,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #Format the arp output
-grep -E "^[0-9]{3}\.[0-9]+" <"$TEMPFILE" > "$OUTPUT_FILE"
+grep -E '^[0-9]{3}\.[0-9]+' "$TEMPFILE" > "$OUTPUT_FILE"
 
 #delete the temporary files
-rm -rf "$TEMPDIR"
+rm -rf "$TEMPDIR"-
