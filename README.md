@@ -7,7 +7,7 @@ With other devices tested against exploits, it gives administrators a head start
 
 ## Run the Application
 Navigate to the build directory and execute the following command 
-**                        ./build.sh**
+**./build.sh**
 
 ## To Integrate
 Drammer: A bot used to control android devices. More info on this can be found on 1) https://www.vusec.net/projects/drammer/ 2) https://vvdveen.com/publications/drammer.pdf
