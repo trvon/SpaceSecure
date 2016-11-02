@@ -82,10 +82,10 @@ def initialSetup():
 # and their security status
 def getDeviceList():
     # calls the SH script that scans the network
-    os.system("./scripts/discoverDevices.sh")
+    os.system("../src/scripts/discoverDevices.sh")
 
     # opens output recieved from script
-    outputFile = open('connectedDevices.txt', 'r')
+    outputFile = open('./connectedDevices.txt', 'r')
     returnList = []
     # iterates through the output file and pulls individaul info
     for row in outputFile:
