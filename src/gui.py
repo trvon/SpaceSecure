@@ -1,9 +1,12 @@
 # !/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
+# Authors: Rahul, Trvon, and Parker
+# Contributors:
+
 import Tkinter
 import tkFileDialog
-import tkColorChooser
+# import tkColorChooser
 
 from Tkinter import Label, Menu
 
@@ -42,8 +45,7 @@ class k4tress_tk(Tkinter.Frame):
 
     # Should probally pass file to the backend
     def readscript(self, filename):
-        f = open(filename, "r")
-        # TODO with script
+        backend.importscript(filename)
 
     # Opens Github Repo until popup info window is configured
     def info(self):
@@ -144,6 +146,7 @@ class k4tress_tk(Tkinter.Frame):
             self.tree.insert(
                 "", 0, value=(entry[0], entry[1], entry[2], entry[3]))
 
+    # GUI settings
     def initialize(self):
         # Appearance
         self.bigFont = tkFont.Font(family='times', size=13)

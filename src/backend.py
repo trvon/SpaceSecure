@@ -1,4 +1,6 @@
 import os
+import shutil
+
 
 # defines and returns list of login/password combinations derived from the
 # MIRAI exploit(https://github.com/jgamblin/Mirai-Source-Code)
@@ -113,8 +115,12 @@ def getDeviceList():
 # the password to newpass, returning false if the attempt fails
 
 
+def importscript(file):
+    shutil.copyfile(file, '../src/import/file.py')
+
+
 def secureTest(target):
-    if os.system("./scripts/sshVulnerarbilityCheck.sh") == 1:
+    if os.system("../scripts/sshVulnerarbilityCheck.sh") == 1:
         return True
     else:
         return False
