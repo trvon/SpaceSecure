@@ -115,8 +115,8 @@ def getDeviceList():
 # the password to newpass, returning false if the attempt fails
 
 
-def importscript(file):
-    shutil.copyfile(file, '../src/import/file.py')
+def importscript(file, filename):
+    shutil.copyfile(file, '../src/import/'+filename)
 
 
 def secureTest(target):

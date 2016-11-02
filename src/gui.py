@@ -6,6 +6,7 @@
 
 import Tkinter
 import tkFileDialog
+import os
 # import tkColorChooser
 
 from Tkinter import Label, Menu
@@ -45,7 +46,8 @@ class k4tress_tk(Tkinter.Frame):
 
     # Should probally pass file to the backend
     def readscript(self, filename):
-        backend.importscript(filename)
+        self.file = os.path.basename(filename)
+        backend.importscript(filename, self.file)
 
     # Opens Github Repo until popup info window is configured
     def info(self):
