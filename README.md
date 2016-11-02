@@ -5,8 +5,15 @@ The motivation behind SpaceSecure was to give network savvy and regular people a
 
 With other devices tested against exploits, it gives administrators a head start on patching devices that were previously unknown to be vunerable to the exploits tested them. We hope this inspires individuals to be more safe on the web, and to update freqently.
 
+## Run the Application
+Navigate to the build directory and execute the following command 
+**./build.sh**
+
 ## To Integrate
-Drammer: A bot used to control android devices. More info on this can be found on 1) https://www.vusec.net/projects/drammer/ 2) https://vvdveen.com/publications/drammer.pdf
+Drammer: A bot used to control android devices. More info on this can be found on 
+1) https://www.vusec.net/projects/drammer/ 
+2) https://vvdveen.com/publications/drammer.pdf
+
 
 ## Support
 The program is supportable on linux devices and an windows machine with a command terminal emulator equipped with the correct scan utilities.
@@ -21,7 +28,7 @@ The program is supportable on linux devices and an windows machine with a comman
 
 Authors
 - [GitHub] (https://github.com/Paxion42) Paxion42
-- [GitHub] (https://github.com/rahulr56) rahulr56
+- [GitHub] (https://github.com/rahulr56) Rahul
 - [GitHub] (https://github.com/Tremaux) Tremaux
 
 Created at HackNC

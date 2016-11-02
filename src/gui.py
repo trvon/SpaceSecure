@@ -1,8 +1,13 @@
 # !/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
+# Authors: Rahul, Trvon, and Parker
+# Contributors:
+
 import Tkinter
 import tkFileDialog
+import os
+# import tkColorChooser
 
 from Tkinter import Label, Menu
 
@@ -18,10 +23,11 @@ class k4tress_tk(Tkinter.Frame):
         global top
         global password
         global treeContent
+        global current
         Tkinter.Frame.__init__(self, parent)
         self.variable = Tkinter.StringVar()
         self.parent = parent
-
+        self.grid(sticky='nwes')
         self.initialize()
         self.createWidgits()
         backend.initialSetup()
@@ -30,7 +36,8 @@ class k4tress_tk(Tkinter.Frame):
 
     def script(self):
         # Code for importing scripts goes here
-        self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh')]
+        self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh'),
+                       ('C Scripts', '*.c')]
         dlg = tkFileDialog.Open(self, filetypes=self.ftypes)
         fm = dlg.show()
         # File Menu
@@ -39,8 +46,8 @@ class k4tress_tk(Tkinter.Frame):
 
     # Should probally pass file to the backend
     def readscript(self, filename):
-        f = open(filename, "r")
-        # TODO with script
+        self.file = os.path.basename(filename)
+        backend.importscript(filename, self.file)
 
     # Opens Github Repo until popup info window is configured
     def info(self):
@@ -88,6 +95,7 @@ class k4tress_tk(Tkinter.Frame):
         treeContent = self.tree.get_children()
         for branch in treeContent:
             if self.searchItem(branch, findItem):
+                self.tree.focus(branch)
                 self.tree.selection_set(branch)
                 self.variable.set('Item Found!')
                 notFound = False
@@ -111,17 +119,21 @@ class k4tress_tk(Tkinter.Frame):
     # Some Appearance modifications
     def createWidgits(self):
         top = self.winfo_toplevel()
-        top.rowconfigure(0, weight=1)
+        top.rowconfigure(3, weight=1)
+        top.columnconfigure(3, weight=1)
+        # Resizable settings
         top.columnconfigure(0, weight=1)
-        self.rowconfigure(0, weight=1)
+        top.rowconfigure(0, weight=0)
+        top.columnconfigure(3, weight=0)
         self.columnconfigure(0, weight=1, uniform=True)
         self.variable.set('Search Ready!')
         # Menu Functionality
         # Functionality for importing script
-        self.menubar = Menu(master=self)
+        self.menubar = Menu(master=self, relief=Tkinter.RAISED)
         self.filemenu = Menu(self.menubar, tearoff=0)
         # Menu Buttons
         self.menubar.add_command(label="Scan", command=self.OnScan)
+        self.menubar.add_separator()
         self.menubar.add_cascade(label="Options", menu=self.filemenu)
         self.filemenu.add_command(label="Scripts", command=self.script)
         self.filemenu.add_command(label="Info", command=self.info)
@@ -136,19 +148,21 @@ class k4tress_tk(Tkinter.Frame):
             self.tree.insert(
                 "", 0, value=(entry[0], entry[1], entry[2], entry[3]))
 
+    # GUI settings
     def initialize(self):
         # Appearance
         self.bigFont = tkFont.Font(family='times', size=13)
         self.option_add('*Button*font', self.bigFont)
         # Main from settings
         self.parent.resizable(True, True)
-        self.parent.grid_rowconfigure(0, weight=1)
+        self.parent.grid_rowconfigure(0, weight=3)
         self.parent.title("SpaceSecure")
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1, minsize=25)
         # Tree Building
         self.tree = ttk.Treeview(selectmode="extended", columns=(
             'IP', 'MAC Address', 'Device', 'Security'), show="headings")
         self.treeview = self.tree
+        # Adding support for night mode
 
         # Search Bar
         # Device Search Entry Field
@@ -159,7 +173,7 @@ class k4tress_tk(Tkinter.Frame):
         Label(self.parent, textvariable=self.variable, relief=Tkinter.SUNKEN,
               font=self.bigFont).grid(row=0, column=0, sticky='wnes')
         self.entry.grid(
-            column=3, columnspan=2, row=0, rowspan=1, sticky='nesw')
+            column=1, columnspan=4, row=0, rowspan=1, sticky='nesw')
         self.entry.bind('<Enter>', self.defaultSearch)
         self.entry.bind('<Return>', self.SearchOnEnter)
 
@@ -200,8 +214,8 @@ class k4tress_tk(Tkinter.Frame):
         self.tree.heading("Security", text="Secure")
         # Column Settings Continued
         self.tree.column('#0', width=0)
-        self.tree.column("IP", stretch=True, width=90)
-        self.tree.column("MAC Address", stretch=True)
+        self.tree.column("IP", stretch=True, width=95)
+        self.tree.column("MAC Address", stretch=True, width=120)
         self.tree.column("Device", stretch=True)
         self.tree.column("Security", stretch=True, width=80)
 

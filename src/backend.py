@@ -1,4 +1,6 @@
 import os
+import shutil
+
 
 # defines and returns list of login/password combinations derived from the
 # MIRAI exploit(https://github.com/jgamblin/Mirai-Source-Code)
@@ -82,10 +84,10 @@ def initialSetup():
 # and their security status
 def getDeviceList():
     # calls the SH script that scans the network
-    os.system("./scripts/discoverDevices.sh")
+    os.system("../src/scripts/discoverDevices.sh")
 
     # opens output recieved from script
-    outputFile = open('connectedDevices.txt', 'r')
+    outputFile = open('./connectedDevices.txt', 'r')
     returnList = []
     # iterates through the output file and pulls individaul info
     for row in outputFile:
@@ -113,8 +115,12 @@ def getDeviceList():
 # the password to newpass, returning false if the attempt fails
 
 
+def importscript(file, filename):
+    shutil.copyfile(file, '../src/import/'+filename)
+
+
 def secureTest(target):
-    if os.system("./scripts/sshVulnerarbilityCheck.sh") == 1:
+    if os.system("../scripts/sshVulnerarbilityCheck.sh") == 1:
         return True
     else:
         return False

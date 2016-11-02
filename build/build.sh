@@ -43,7 +43,7 @@ function main
     mv -f ../src/*.pyc .
     
     #Start the Application
-    python gui.pyc 2>/dev/null
+    python gui.pyc #2>/dev/null
 
     #Normal Clean Up once the application is closed
     rm -rf *.pyc *.txt
