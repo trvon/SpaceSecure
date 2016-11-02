@@ -7,7 +7,7 @@ function connect
         username=$(echo "$creds" | awk '{print $1}')
         password=$(echo "$creds" | awk '{print $2}')
         connecetion="$username@$ip"
-        sshpass -p "$password" ssh "$connecetion" -o ConnectTimeout=2 StrictHostKeyChecking=no 2>/dev/null
+        sshpass -p "$password" ssh "$connecetion" -o ConnectTimeout=2 StrictHostKeyChecking=no "ls" 2>/dev/null
         if [ $? -eq 0 ];then
             echo "IP : $ip is Vulnerable to username:$username and password:$password"
 			return 0
@@ -26,8 +26,8 @@ function pingAll
 	done   < $IP_LIST_FILE
 }
 
-CREDENTIALS_LIST_FILE="./credentials.txt"
-IP_LIST_FILE="./connectedDevices.txt"
+CREDENTIALS_LIST_FILE="../etc/credentials.txt"
+IP_LIST_FILE="../build/connectedDevices.txt"
 if [ $# -lt 1 ];then
 	echo "Usage $0 [<ip address>|all]"
 	exit 1
