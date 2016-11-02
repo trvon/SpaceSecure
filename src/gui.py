@@ -3,6 +3,7 @@
 
 import Tkinter
 import tkFileDialog
+import tkColorChooser
 
 from Tkinter import Label, Menu
 
@@ -18,6 +19,7 @@ class k4tress_tk(Tkinter.Frame):
         global top
         global password
         global treeContent
+        global current
         Tkinter.Frame.__init__(self, parent)
         self.variable = Tkinter.StringVar()
         self.parent = parent
@@ -30,7 +32,8 @@ class k4tress_tk(Tkinter.Frame):
 
     def script(self):
         # Code for importing scripts goes here
-        self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh')]
+        self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh'),
+                       ('C Scripts', '*.c')]
         dlg = tkFileDialog.Open(self, filetypes=self.ftypes)
         fm = dlg.show()
         # File Menu
@@ -88,6 +91,7 @@ class k4tress_tk(Tkinter.Frame):
         treeContent = self.tree.get_children()
         for branch in treeContent:
             if self.searchItem(branch, findItem):
+                self.tree.focus(branch)
                 self.tree.selection_set(branch)
                 self.variable.set('Item Found!')
                 notFound = False
@@ -117,15 +121,15 @@ class k4tress_tk(Tkinter.Frame):
         top.columnconfigure(0, weight=1)
         top.rowconfigure(0, weight=0)
         top.columnconfigure(3, weight=0)
-
         self.columnconfigure(0, weight=1, uniform=True)
         self.variable.set('Search Ready!')
         # Menu Functionality
         # Functionality for importing script
-        self.menubar = Menu(master=self)
+        self.menubar = Menu(master=self, relief=Tkinter.RAISED)
         self.filemenu = Menu(self.menubar, tearoff=0)
         # Menu Buttons
         self.menubar.add_command(label="Scan", command=self.OnScan)
+        self.menubar.add_separator()
         self.menubar.add_cascade(label="Options", menu=self.filemenu)
         self.filemenu.add_command(label="Scripts", command=self.script)
         self.filemenu.add_command(label="Info", command=self.info)
@@ -153,6 +157,7 @@ class k4tress_tk(Tkinter.Frame):
         self.tree = ttk.Treeview(selectmode="extended", columns=(
             'IP', 'MAC Address', 'Device', 'Security'), show="headings")
         self.treeview = self.tree
+        # Adding support for night mode
 
         # Search Bar
         # Device Search Entry Field
