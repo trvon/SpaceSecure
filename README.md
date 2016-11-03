@@ -9,6 +9,13 @@ With other devices tested against exploits, it gives administrators a head start
 Navigate to the build directory and execute the following command 
 **./build.sh**
 
+## About Importing Scripts (Not 100% working at the moment)
+When importing scripts, make sure the scripts can take input of the device that they are going to be pointed at. ( RIght now the IP address is what is being outputed to the scripts on the run command ) After import scripts, the user simple needs to select the script they would like to run and the device they would like to run it against. 
+
+### Needs to be added to Scripts
+* Ability to see sucess of scripts in status bar. ( ex. Username, Password of sucessful brute force, or if device is vunerable to script/exploit )
+* Ability to input Username and Password of devices, user already knows credentials for. 
+
 ## To Integrate
 Drammer: A bot used to control android devices. More info on this can be found on 
 1) https://www.vusec.net/projects/drammer/ 
