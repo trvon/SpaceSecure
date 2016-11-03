@@ -64,7 +64,7 @@ def __commonAuthSetup():
 
 
 def loadCredFromFile():
-    file = open("./credentials.txt", "r")
+    file = open("../build/credentials.txt", "r")
     for line in file:
         cred = line.split()
         authPairs.append([cred[0], cred[1]])
@@ -84,10 +84,10 @@ def initialSetup():
 # and their security status
 def getDeviceList():
     # calls the SH script that scans the network
-    os.system("../src/scripts/discoverDevices.sh")
+    os.system("../scripts/discoverDevices.sh")
 
     # opens output recieved from script
-    outputFile = open('./connectedDevices.txt', 'r')
+    outputFile = open('../build/connectedDevices.txt', 'r')
     returnList = []
     # iterates through the output file and pulls individaul info
     for row in outputFile:
