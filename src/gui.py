@@ -106,12 +106,12 @@ class k4tress_tk(Tkinter.Frame):
     def OnHideClick(self):
         for item in self.tree.get_children():
             if backend.secureTest(self.tree.item(item)["values"][0]):
-                self.tree.item(item)["values"][3] = "Secured"
+                self.variable.set('Tested Devices is Secure')
+                self.treeview.item(item)["values"][3] = "Secured"
             else:
+                self.variable.set('Tested Devices is Unsecure')
                 self.tree.item(item)["values"][3] = "Unsecured"
 
-    def vunerableDevice(self):
-        x = 0
         # self.variable.set()
         # Add function where label is set to Username and Password
         # Scripted used to successfully get into device
@@ -197,7 +197,7 @@ class k4tress_tk(Tkinter.Frame):
         # Secure Toggle
         # Button to hide secure entries, cleaning up the view
         hide = Tkinter.Button(
-            self.parent, text=u"Toggle Secure View", command=self.OnHideClick,)
+            self.parent, text=u"Check Device", command=self.OnHideClick,)
         # may need to reposition button within GUI
         hide.grid(column=3, columnspan=2, row=1, sticky='nwe')
 

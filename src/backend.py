@@ -5,7 +5,6 @@ import shutil
 # defines and returns list of login/password combinations derived from the
 # MIRAI exploit(https://github.com/jgamblin/Mirai-Source-Code)
 
-
 def __commonAuthSetup():
 
     global authPairs
@@ -120,7 +119,9 @@ def importscript(file, filename):
 
 
 def secureTest(target):
-    if os.system("../scripts/sshVulnerarbilityCheck.sh target") == 1:
+    global result
+    status = os.system("../scripts/sshVulnerarbilityCheck.sh target")
+    if status == 1:
         return True
     else:
         return False
@@ -134,3 +135,4 @@ def updatePasswords(changeTargets):
             if changeAttempt(target[0], target[1], pair) == True:
                 break
 # continues attempts until one is succesfull
+
