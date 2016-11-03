@@ -48,6 +48,7 @@ class k4tress_tk(Tkinter.Frame):
     def readscript(self, filename):
         self.file = os.path.basename(filename)
         backend.importscript(filename, self.file)
+        self.importTree.insert("", 0, values=self.file)
 
     # Opens Github Repo until popup info window is configured
     def info(self):
@@ -104,6 +105,7 @@ class k4tress_tk(Tkinter.Frame):
 
     # hides all secure entries from the tree
     def OnHideClick(self):
+
         for item in self.tree.get_children():
             if backend.secureTest(self.tree.item(item)["values"][0]):
                 self.variable.set('Tested Devices is Secure')
@@ -162,8 +164,10 @@ class k4tress_tk(Tkinter.Frame):
         self.tree = ttk.Treeview(selectmode="extended", columns=(
             'IP', 'MAC Address', 'Device', 'Security'), show="headings")
         self.treeview = self.tree
-        # Adding support for night mode
-
+        # Script Tree
+        self.importTree = ttk.Treeview(selectmode="extended",
+                                       column=('Scripts'), show="headings")
+        self.treeviewImport = self.tree
         # Search Bar
         # Device Search Entry Field
         self.entryVariable = Tkinter.StringVar()
@@ -182,14 +186,14 @@ class k4tress_tk(Tkinter.Frame):
         self.entryPassword = Tkinter.StringVar()
         self.entry = Tkinter.Entry(
             self.parent, textvariable=self.entryPassword)
-        self.entry.grid(column=3, row=4, columnspan=2, sticky='new')
+        self.entry.grid(column=4, row=4, columnspan=2, sticky='new')
         self.entryPassword.set(u"Enter New Password!")
         self.entry.bind("<Return>", self.PasswordEnter)
 
         # Button to Submit password to Devices in SQL Database
         button = Tkinter.Button(
             self.parent, text=u"Submit Password", command=self.PasswordButton)
-        button.grid(column=3, columnspan=2, row=3, sticky='swe')
+        button.grid(column=4, columnspan=2, row=3, sticky='swe')
         # Auto selects the text field
         self.entry.focus_set()
         self.entry.selection_range(0, Tkinter.END)
@@ -199,14 +203,29 @@ class k4tress_tk(Tkinter.Frame):
         hide = Tkinter.Button(
             self.parent, text=u"Check Device", command=self.OnHideClick,)
         # may need to reposition button within GUI
-        hide.grid(column=3, columnspan=2, row=1, sticky='nwe')
+        hide.grid(column=4, columnspan=2, row=1, sticky='nwe')
+
+        # IMPORTED FILE VIEW
+        self.scrollScript = ttk.Scrollbar(
+            orient='vertical', command=self.importTree.yview)
+        self.scrollScript.grid(
+            row=2, rowspan=2, column=6, columnspan=1, sticky='nswe')
+        # Script Tree Setup
+        self.importTree.grid(
+            row=2, column=4, rowspan=2, columnspan=1, sticky='news')
+        self.importTree.configure(yscrollcommand=self.scrollScript.set)
+        # Columns settings
+        self.importTree.heading("Scripts", text="Scripts")
+        self.importTree.column("Scripts", stretch=True)
+        self.importTree.column('#0', width=0)
 
         # TREE/DATABASE CONFIG
         # Tree scroll bar
-        verticle = ttk.Scrollbar(orient='vertical', command=self.tree.yview)
-        verticle.grid(row=1, rowspan=3, column=2, sticky='nes')
+        self.verticle = ttk.Scrollbar(
+            orient='vertical', command=self.tree.yview)
+        self.verticle.grid(row=1, rowspan=3, column=2, sticky='nes')
         self.tree.grid(row=1, column=0, rowspan=3, columnspan=3, sticky='news')
-        self.tree.configure(yscrollcommand=verticle.set)
+        self.tree.configure(yscrollcommand=self.verticle.set)
         # Columnn Customization
         self.tree.heading("Device", text="Device Name")
         self.tree.heading("IP", text="IP")
@@ -222,7 +241,7 @@ class k4tress_tk(Tkinter.Frame):
 
 def main():
     root = Tkinter.Tk()
-    root.geometry('{}x{}'.format(750, 280))
+    root.geometry('{}x{}'.format(900, 280))
     d = k4tress_tk(root)
     root.mainloop()
 
