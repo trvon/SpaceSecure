@@ -34,6 +34,7 @@ class k4tress_tk(Tkinter.Frame):
         # Menu Support
         self.master.config(menu=self.menubar)
 
+    # Importing scripts support
     def script(self):
         # Code for importing scripts goes here
         self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh'),
@@ -43,6 +44,19 @@ class k4tress_tk(Tkinter.Frame):
         # File Menu
         if fm != ' ':
             self.script = self.readscript(fm)
+
+    # Reloads previously imported scripts
+    def reloadScripts(self):
+        for file in os.listdir("../src/import/"):
+            self.name = os.path.basename(file)
+            self.importTree.insert("", 0, values=self.name)
+
+    # Deletes scripts in the window and in the import directory
+    def scriptDelete(self):
+        for item in self.importTree.selection():
+            self.file = self.importTree.item(item)["values"][0]
+            os.remove('../src/import/' + self.file)
+            self.importTree.delete(item)
 
     # Should probally pass file to the backend
     def readscript(self, filename):
@@ -54,10 +68,13 @@ class k4tress_tk(Tkinter.Frame):
     def info(self):
         webbrowser.open_new_tab('https://github.com/trvon/SpaceSecure')
 
+    # Changes the password of device that is accessible
+    # NEEDS TO BE SETUP
     def PasswordButton(self):
         self.password = self.entryPassword.get()
         self.passSubmit(self.password)
 
+    # Button linking to field, need to condense
     def PasswordEnter(self, event):
         self.password = self.entryPassword.get()
         self.passSubmit(self.password)
@@ -103,9 +120,9 @@ class k4tress_tk(Tkinter.Frame):
         if notFound:
             self.searchResult()
 
+    # TODO: Needs to be fixed
     # hides all secure entries from the tree
     def OnHideClick(self):
-
         for item in self.tree.get_children():
             if backend.secureTest(self.tree.item(item)["values"][0]):
                 self.variable.set('Tested Devices is Secure')
@@ -139,6 +156,8 @@ class k4tress_tk(Tkinter.Frame):
         self.menubar.add_cascade(label="Options", menu=self.filemenu)
         self.filemenu.add_command(label="Scripts", command=self.script)
         self.filemenu.add_command(label="Info", command=self.info)
+        # Adds previously loaded scripts
+        self.reloadScripts()
 
     def OnScan(self):
         self.treeContents = backend.getDeviceList()
@@ -186,7 +205,7 @@ class k4tress_tk(Tkinter.Frame):
         self.entryPassword = Tkinter.StringVar()
         self.entry = Tkinter.Entry(
             self.parent, textvariable=self.entryPassword)
-        self.entry.grid(column=4, row=4, columnspan=2, sticky='new')
+        self.entry.grid(column=4, row=4, columnspan=3, sticky='new')
         self.entryPassword.set(u"Enter New Password!")
         self.entry.bind("<Return>", self.PasswordEnter)
 
@@ -201,18 +220,22 @@ class k4tress_tk(Tkinter.Frame):
         # Secure Toggle
         # Button to hide secure entries, cleaning up the view
         hide = Tkinter.Button(
-            self.parent, text=u"Check Device", command=self.OnHideClick,)
+            self.parent, text=u"Check Device", command=self.OnHideClick)
         # may need to reposition button within GUI
-        hide.grid(column=4, columnspan=2, row=1, sticky='nwe')
+        hide.grid(column=4, columnspan=1, row=1, sticky='nwe')
+
+        delete = Tkinter.Button(self.parent, text=u"Delete Script",
+                                command=self.scriptDelete,)
+        delete.grid(column=4, row=2, columnspan=1, sticky='nsew')
 
         # IMPORTED FILE VIEW
         self.scrollScript = ttk.Scrollbar(
             orient='vertical', command=self.importTree.yview)
         self.scrollScript.grid(
-            row=2, rowspan=2, column=6, columnspan=1, sticky='nswe')
+            row=3, rowspan=1, column=6, columnspan=1, sticky='nswe')
         # Script Tree Setup
         self.importTree.grid(
-            row=2, column=4, rowspan=2, columnspan=1, sticky='news')
+            row=3, column=4, rowspan=2, columnspan=1, sticky='news')
         self.importTree.configure(yscrollcommand=self.scrollScript.set)
         # Columns settings
         self.importTree.heading("Scripts", text="Scripts")
