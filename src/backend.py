@@ -116,11 +116,11 @@ def getDeviceList():
 
 
 def importscript(file, filename):
-    shutil.copyfile(file, '../src/import/'+filename)
+    shutil.copyfile(file, '../src/import/' + filename)
 
 
 def secureTest(target):
-    if os.system("../scripts/sshVulnerarbilityCheck.sh") == 1:
+    if os.system("../scripts/sshVulnerarbilityCheck.sh target") == 1:
         return True
     else:
         return False
