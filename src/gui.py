@@ -45,6 +45,11 @@ class k4tress_tk(Tkinter.Frame):
         if fm != ' ':
             self.script = self.readscript(fm)
 
+    def runScript(self):
+        for item in self.importTree.selection():
+            self.file = self.importTree.item(item)["values"][0]
+            # Pass to backend
+
     # Reloads previously imported scripts
     def reloadScripts(self):
         for file in os.listdir("../src/import/"):
@@ -141,9 +146,14 @@ class k4tress_tk(Tkinter.Frame):
         top.rowconfigure(3, weight=1)
         top.columnconfigure(3, weight=1)
         # Resizable settings
+        top.columnconfigure(2, weight=0)
         top.columnconfigure(0, weight=1)
         top.rowconfigure(0, weight=0)
-        top.columnconfigure(3, weight=0)
+        top.rowconfigure(1, weight=0)
+        top.rowconfigure(4, weight=1)
+        top.columnconfigure(4, weight=0)
+        top.rowconfigure(3, weight=0)
+
         self.columnconfigure(0, weight=1, uniform=True)
         self.variable.set('Search Ready!')
         # Menu Functionality
@@ -187,6 +197,7 @@ class k4tress_tk(Tkinter.Frame):
         self.importTree = ttk.Treeview(selectmode="extended",
                                        column=('Scripts'), show="headings")
         self.treeviewImport = self.tree
+
         # Search Bar
         # Device Search Entry Field
         self.entryVariable = Tkinter.StringVar()
@@ -196,7 +207,7 @@ class k4tress_tk(Tkinter.Frame):
         Label(self.parent, textvariable=self.variable, relief=Tkinter.SUNKEN,
               font=self.bigFont).grid(row=0, column=0, sticky='wnes')
         self.entry.grid(
-            column=1, columnspan=4, row=0, rowspan=1, sticky='nesw')
+            column=1, columnspan=6, row=0, rowspan=1, sticky='nesw')
         self.entry.bind('<Enter>', self.defaultSearch)
         self.entry.bind('<Return>', self.SearchOnEnter)
 
@@ -205,14 +216,14 @@ class k4tress_tk(Tkinter.Frame):
         self.entryPassword = Tkinter.StringVar()
         self.entry = Tkinter.Entry(
             self.parent, textvariable=self.entryPassword)
-        self.entry.grid(column=4, row=4, columnspan=3, sticky='new')
+        self.entry.grid(column=4, row=7, columnspan=4, sticky='new')
         self.entryPassword.set(u"Enter New Password!")
         self.entry.bind("<Return>", self.PasswordEnter)
 
         # Button to Submit password to Devices in SQL Database
         button = Tkinter.Button(
             self.parent, text=u"Submit Password", command=self.PasswordButton)
-        button.grid(column=4, columnspan=2, row=3, sticky='swe')
+        button.grid(column=4, columnspan=3, row=6, sticky='swe')
         # Auto selects the text field
         self.entry.focus_set()
         self.entry.selection_range(0, Tkinter.END)
@@ -222,32 +233,35 @@ class k4tress_tk(Tkinter.Frame):
         hide = Tkinter.Button(
             self.parent, text=u"Check Device", command=self.OnHideClick)
         # may need to reposition button within GUI
-        hide.grid(column=4, columnspan=1, row=1, sticky='nwe')
-
+        hide.grid(column=4, columnspan=3, row=1, sticky='nwe')
         delete = Tkinter.Button(self.parent, text=u"Delete Script",
                                 command=self.scriptDelete,)
-        delete.grid(column=4, row=2, columnspan=1, sticky='nsew')
+        delete.grid(column=4, row=2, columnspan=3, sticky='nsew')
 
         # IMPORTED FILE VIEW
         self.scrollScript = ttk.Scrollbar(
             orient='vertical', command=self.importTree.yview)
         self.scrollScript.grid(
-            row=3, rowspan=1, column=6, columnspan=1, sticky='nswe')
+            row=4, rowspan=2, column=6, columnspan=1, sticky='nswe')
         # Script Tree Setup
         self.importTree.grid(
-            row=3, column=4, rowspan=2, columnspan=1, sticky='news')
+            row=4, column=4, rowspan=2, columnspan=1, sticky='news')
         self.importTree.configure(yscrollcommand=self.scrollScript.set)
         # Columns settings
         self.importTree.heading("Scripts", text="Scripts")
         self.importTree.column("Scripts", stretch=True)
         self.importTree.column('#0', width=0)
+        # Button For Starting import scripts
+        startScript = Tkinter.Button(
+            self.parent, text=u"Run Script", command=self.runScript,)
+        startScript.grid(column=4, columnspan=3, row=3, sticky='nswe')
 
         # TREE/DATABASE CONFIG
         # Tree scroll bar
         self.verticle = ttk.Scrollbar(
             orient='vertical', command=self.tree.yview)
-        self.verticle.grid(row=1, rowspan=3, column=2, sticky='nes')
-        self.tree.grid(row=1, column=0, rowspan=3, columnspan=3, sticky='news')
+        self.verticle.grid(row=1, rowspan=6, column=3, sticky='nes')
+        self.tree.grid(row=1, column=0, rowspan=6, columnspan=4, sticky='news')
         self.tree.configure(yscrollcommand=self.verticle.set)
         # Columnn Customization
         self.tree.heading("Device", text="Device Name")
@@ -264,7 +278,7 @@ class k4tress_tk(Tkinter.Frame):
 
 def main():
     root = Tkinter.Tk()
-    root.geometry('{}x{}'.format(900, 280))
+    root.geometry('{}x{}'.format(900, 420))
     d = k4tress_tk(root)
     root.mainloop()
 
