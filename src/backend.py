@@ -134,12 +134,16 @@ def scriptrun(self, filename, deviceip):
     os.system("../src/import/" + filename + " " + deviceip)
 
 
+def scriptrunpass(self, filename, deviceip, user, password):
+    os.system("../src/import" + filename + " " + deviceip +
+              " " + " " + user + " " + password)
 # takes a list of IP's determined to be insecure and new passwords to
 # replace them with.
+
+
 def updatePasswords(changeTargets):
     for target in changeTargets:
         for pair in authPairs:
             if changeAttempt(target[0], target[1], pair) == True:
                 break
 # continues attempts until one is succesfull
-

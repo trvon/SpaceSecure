@@ -14,6 +14,7 @@ import ttk
 import tkFont
 import webbrowser
 import backend
+import password
 
 
 class k4tress_tk(Tkinter.Frame):
@@ -35,7 +36,7 @@ class k4tress_tk(Tkinter.Frame):
         # Menu Support
         self.master.config(menu=self.menubar)
 
-    # Importing scripts support to backend
+# Importing scripts support to backend
     def script(self):
         # Code for importing scripts goes here
         self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh'),
@@ -48,12 +49,21 @@ class k4tress_tk(Tkinter.Frame):
 
     # For all the selected Devices all selected scripts against the devices
     def runScript(self):
-        for item in self.importTree.selection():
-            self.file = self.importTree.item(item)["values"][0]
-            for branch in self.tree.selection():
-                self.device = self.tree.item(branch)["values"][0]
-                # Pass to backend
-                backend.scriptrun(self.file, self.device)
+        cred = password.checkroot()
+        if cred != 0:
+            for item in self.importTree.selection():
+                self.file = self.importTree.item(item)["values"][0]
+                for branch in self.tree.selection():
+                    self.device = self.tree.item(branch)["values"][0]
+                    # Pass to backend with username and password
+                    backend.scriptrun(self.file, self.device, cred[0], cred[1])
+        else:
+            for item in self.importTree.selection():
+                self.file = self.importTree.item(item)["values"][0]
+                for branch in self.tree.selection():
+                    self.device = self.tree.item(branch)["values"][0]
+                    # Pass to backend with username and password
+                    backend.scriptrun(self.file, self.device)
 
     # Reloads previously imported scripts or scripts in folder
     def reloadScripts(self):
