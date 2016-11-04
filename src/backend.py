@@ -127,6 +127,10 @@ def secureTest(target):
         return False
 
 
+def scriptrun(self, filename, deviceip):
+    os.system("../scc/import/" + filename + " " + deviceip)
+
+
 # takes a list of IP's determined to be insecure and new passwords to
 # replace them with.
 def updatePasswords(changeTargets):

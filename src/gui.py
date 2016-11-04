@@ -47,8 +47,11 @@ class k4tress_tk(Tkinter.Frame):
 
     def runScript(self):
         for item in self.importTree.selection():
-            self.file = self.importTree.item(item)["values"][0]
-            # Pass to backend
+            for branch in self.tree.selection():
+                self.file = self.importTree.item(item)["values"][0]
+                self.device = self.tree.item(branch)["values"][0]
+                # Pass to backend
+                backend.scriptrun(self.file, self.device)
 
     # Reloads previously imported scripts
     def reloadScripts(self):
