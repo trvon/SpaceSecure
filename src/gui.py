@@ -7,7 +7,6 @@
 import Tkinter
 import tkFileDialog
 import os
-# import tkColorChooser
 
 from Tkinter import Label, Menu
 
@@ -20,6 +19,7 @@ import backend
 class k4tress_tk(Tkinter.Frame):
 
     def __init__(self, parent):
+        # Variables for testing
         global top
         global password
         global treeContent
@@ -28,13 +28,14 @@ class k4tress_tk(Tkinter.Frame):
         self.variable = Tkinter.StringVar()
         self.parent = parent
         self.grid(sticky='nwes')
+        # Sets up features
         self.initialize()
         self.createWidgits()
         backend.initialSetup()
         # Menu Support
         self.master.config(menu=self.menubar)
 
-    # Importing scripts support
+    # Importing scripts support to backend
     def script(self):
         # Code for importing scripts goes here
         self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh'),
@@ -45,15 +46,16 @@ class k4tress_tk(Tkinter.Frame):
         if fm != ' ':
             self.script = self.readscript(fm)
 
+    # For all the selected Devices all selected scripts against the devices
     def runScript(self):
         for item in self.importTree.selection():
+            self.file = self.importTree.item(item)["values"][0]
             for branch in self.tree.selection():
-                self.file = self.importTree.item(item)["values"][0]
                 self.device = self.tree.item(branch)["values"][0]
                 # Pass to backend
                 backend.scriptrun(self.file, self.device)
 
-    # Reloads previously imported scripts
+    # Reloads previously imported scripts or scripts in folder
     def reloadScripts(self):
         for file in os.listdir("../src/import/"):
             self.name = os.path.basename(file)
@@ -87,6 +89,7 @@ class k4tress_tk(Tkinter.Frame):
         self.password = self.entryPassword.get()
         self.passSubmit(self.password)
 
+    # Connects Password Submit field to button
     def passSubmit(self, password):
         backend.updatePasswords(
             (self.tree.item(self.tree.focus())['values'][0], password))
@@ -98,6 +101,7 @@ class k4tress_tk(Tkinter.Frame):
     def searchResult(self):
         self.variable.set('Sorry, item not found!')
 
+    # Sets search bar back to default
     def defaultSearch(self, event):
         self.variable.set('Search Ready!')
 
@@ -113,7 +117,6 @@ class k4tress_tk(Tkinter.Frame):
         return compare
 
     # Search Function
-    # self.tree.item(currentFocus)['values'][0],self.entryVariable.get()
     def SearchOnEnter(self, event):
         global findItem
         findItem = self.entryVariable.get().lower()
@@ -121,9 +124,11 @@ class k4tress_tk(Tkinter.Frame):
         treeContent = self.tree.get_children()
         for branch in treeContent:
             if self.searchItem(branch, findItem):
+                # self.itemLocation = self.treeview.index(branch)
                 self.tree.focus(branch)
                 self.tree.selection_set(branch)
                 self.variable.set('Item Found!')
+                # self.verticle.activate(self.verticle, self.itemLocation)
                 notFound = False
         if notFound:
             self.searchResult()
@@ -134,10 +139,10 @@ class k4tress_tk(Tkinter.Frame):
         for item in self.tree.get_children():
             if backend.secureTest(self.tree.item(item)["values"][0]):
                 self.variable.set('Tested Devices is Secure')
-                self.treeview.item(item)["values"][3] = "Secured"
+                self.treeview.item(item)["values"][3].append("Secured")
             else:
                 self.variable.set('Tested Devices is Unsecure')
-                self.tree.item(item)["values"][3] = "Unsecured"
+                self.tree.item(item)["values"][3].append("Unsecured")
 
         # self.variable.set()
         # Add function where label is set to Username and Password
@@ -146,18 +151,19 @@ class k4tress_tk(Tkinter.Frame):
     # Some Appearance modifications
     def createWidgits(self):
         top = self.winfo_toplevel()
-        top.rowconfigure(3, weight=1)
-        top.columnconfigure(3, weight=1)
         # Resizable settings
-        top.columnconfigure(2, weight=0)
-        top.columnconfigure(0, weight=1)
+        # Row Configurations
         top.rowconfigure(0, weight=0)
         top.rowconfigure(1, weight=0)
-        top.rowconfigure(4, weight=1)
-        top.columnconfigure(4, weight=0)
         top.rowconfigure(3, weight=0)
-
+        top.rowconfigure(4, weight=1)
+        # Column Configuration
+        top.columnconfigure(0, weight=1)
+        top.columnconfigure(2, weight=0)
+        top.columnconfigure(3, weight=1)
+        top.columnconfigure(4, weight=0)
         self.columnconfigure(0, weight=1, uniform=True)
+        # Default alert bar settings
         self.variable.set('Search Ready!')
         # Menu Functionality
         # Functionality for importing script
@@ -169,9 +175,10 @@ class k4tress_tk(Tkinter.Frame):
         self.menubar.add_cascade(label="Options", menu=self.filemenu)
         self.filemenu.add_command(label="Scripts", command=self.script)
         self.filemenu.add_command(label="Info", command=self.info)
-        # Adds previously loaded scripts
+        # Adds previously loaded scripts to Tree
         self.reloadScripts()
 
+    # Start Network Scan
     def OnScan(self):
         self.treeContents = backend.getDeviceList()
         # Clears Tree so tree doesn't duplicate
@@ -241,7 +248,8 @@ class k4tress_tk(Tkinter.Frame):
                                 command=self.scriptDelete,)
         delete.grid(column=4, row=2, columnspan=3, sticky='nsew')
 
-        # IMPORTED FILE VIEW
+        # IMPORTED SCRIPT FILE VIEW
+        # Scrollbar for script view window
         self.scrollScript = ttk.Scrollbar(
             orient='vertical', command=self.importTree.yview)
         self.scrollScript.grid(

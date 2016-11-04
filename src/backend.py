@@ -114,10 +114,12 @@ def getDeviceList():
 # the password to newpass, returning false if the attempt fails
 
 
+# Impports scripts from frontend
 def importscript(file, filename):
     shutil.copyfile(file, '../src/import/' + filename)
 
 
+# Checks Devices against ssh brute force
 def secureTest(target):
     global result
     status = os.system("../scripts/sshVulnerarbilityCheck.sh target")
@@ -127,8 +129,9 @@ def secureTest(target):
         return False
 
 
+# Rungs script passed by selection in GUI
 def scriptrun(self, filename, deviceip):
-    os.system("../scc/import/" + filename + " " + deviceip)
+    os.system("../src/import/" + filename + " " + deviceip)
 
 
 # takes a list of IP's determined to be insecure and new passwords to
