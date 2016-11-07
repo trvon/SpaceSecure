@@ -9,7 +9,7 @@ With other devices tested against exploits, it gives administrators a head start
 Navigate to the build directory and execute the following command 
 **./build.sh**
 
-## About Importing Scripts (Not 100% working at the moment)
+## About Importing Scripts
 When importing scripts, make sure the scripts can take input of the device that they are going to be pointed at. ( RIght now the IP address is what is being outputed to the scripts on the run command ) After import scripts, the user simple needs to select the script they would like to run and the device they would like to run it against. 
 
 ### Needs to be added to Scripts
@@ -26,7 +26,8 @@ Drammer: A bot used to control android devices. More info on this can be found o
 The program is supportable on linux devices and an windows machine with a command terminal emulator equipped with the correct scan utilities.
 
 ## Future Functionality
-- [ ] Add support for easy script import
+- [x] Add support for easy script import
+- [ ] Working on adding default script library for testing in gui
 - [ ] UI overhaul for a more compact program
 - [ ] Add support for more devices, with a quick and easy install
 - [ ] Add threading
