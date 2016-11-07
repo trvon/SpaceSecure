@@ -12,6 +12,7 @@ class Menu(Tkinter.Frame):
 
     def loginScreen(self):
         # Login Label
+        self.master.title("Password")
         self.label_1 = Tkinter.Label(self, text="Username")
         self.label_2 = Tkinter.Label(self, text="Password")
         # Login Fields
