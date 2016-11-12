@@ -27,12 +27,11 @@ The program is supportable on linux devices and an windows machine with a comman
 
 ## Future Functionality
 - [x] Add support for easy script import
+- [ ] Add warnings
 - [ ] Working on adding default script library for testing in gui
 - [ ] UI overhaul for a more compact program
 - [ ] Add support for more devices, with a quick and easy install
 - [ ] Add threading
-
-~ More organization coming soon 
 
 Authors
 - [GitHub] (https://github.com/Paxion42) Paxion42
