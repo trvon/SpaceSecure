@@ -36,7 +36,7 @@ class k4tress_tk(Tkinter.Frame):
         # Menu Support
         self.master.config(menu=self.menubar)
 
-# Importing scripts support to backend
+    # Importing scripts support to backend
     def script(self):
         # Code for importing scripts goes here
         self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh'),
@@ -56,7 +56,7 @@ class k4tress_tk(Tkinter.Frame):
                 for branch in self.tree.selection():
                     self.device = self.tree.item(branch)["values"][0]
                     # Pass to backend with username and password
-                    backend.scriptrun(self.file, self.device, cred[0], cred[1])
+                    backend.scriptrunpass(self.file, self.device, cred[0], cred[1])
         else:
             for item in self.importTree.selection():
                 self.file = self.importTree.item(item)["values"][0]
@@ -136,8 +136,10 @@ class k4tress_tk(Tkinter.Frame):
             if self.searchItem(branch, findItem):
                 # self.itemLocation = self.treeview.index(branch)
                 self.tree.focus(branch)
-                self.tree.selection_set(branch)
+                self.tree.selection_add(branch)
+                self.tree.see(self.tree.selection()[0])
                 self.variable.set('Item Found!')
+                # self.tree.focus_set()
                 # self.verticle.activate(self.verticle, self.itemLocation)
                 notFound = False
         if notFound:
@@ -227,7 +229,7 @@ class k4tress_tk(Tkinter.Frame):
         Label(self.parent, textvariable=self.variable, relief=Tkinter.SUNKEN,
               font=self.bigFont).grid(row=0, column=0, sticky='wnes')
         self.entry.grid(
-            column=1, columnspan=6, row=0, rowspan=1, sticky='nesw')
+            column=3, columnspan=4, row=0, rowspan=1, sticky='nesw')
         self.entry.bind('<Enter>', self.defaultSearch)
         self.entry.bind('<Return>', self.SearchOnEnter)
 
