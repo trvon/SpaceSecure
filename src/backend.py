@@ -1,9 +1,11 @@
 import os
 import shutil
 
+import gui
 
 # defines and returns list of login/password combinations derived from the
 # MIRAI exploit(https://github.com/jgamblin/Mirai-Source-Code)
+
 
 def __commonAuthSetup():
 
@@ -74,7 +76,7 @@ def loadCredFromFile():
 
 
 def initialSetup():
-    # commonAuthSetup()
+    # __commonAuthSetup()
     # global authDatabase = "AuthPairs.txt"
     print " "
 
@@ -120,6 +122,7 @@ def importscript(file, filename):
 
 
 # Checks Devices against ssh brute force
+# Currently the sshScript isn't returning anything to show devices statues
 def secureTest(target):
     global result
     status = os.system("../scripts/sshVulnerarbilityCheck.sh target")
@@ -130,17 +133,22 @@ def secureTest(target):
 
 
 # Rungs script passed by selection in GUI
+# Adding support for error messages
 def scriptrun(self, filename, deviceip):
-    os.system("../src/import/" + filename + " " + deviceip)
+    status = os.system("../src/import/" + filename + " " + deviceip)
+    if status == 1:
+        gui.self.variable.set('Sorry script needs root access!')
 
 
+# Adding Support for incorrect Username Password Combo
 def scriptrunpass(self, filename, deviceip, user, password):
-    os.system("../src/import" + filename + " " + deviceip +
-              " " + " " + user + " " + password)
-# takes a list of IP's determined to be insecure and new passwords to
-# replace them with.
+    status = os.system("../src/import" + filename + " " + deviceip +
+                       " " + " " + user + " " + password)
+    if status == 1:
+        gui.self.variable.set('Username Password Combo is incorrect!')
 
 
+# This needs to be fixed
 def updatePasswords(changeTargets):
     for target in changeTargets:
         for pair in authPairs:

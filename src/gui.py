@@ -7,12 +7,12 @@
 import Tkinter
 import tkFileDialog
 import os
-
-from Tkinter import Label, Menu
-
 import ttk
 import tkFont
 import webbrowser
+
+from Tkinter import Label, Menu
+
 import backend
 import password
 
@@ -56,7 +56,8 @@ class k4tress_tk(Tkinter.Frame):
                 for branch in self.tree.selection():
                     self.device = self.tree.item(branch)["values"][0]
                     # Pass to backend with username and password
-                    backend.scriptrunpass(self.file, self.device, cred[0], cred[1])
+                    backend.scriptrunpass(
+                        self.file, self.device, cred[0], cred[1])
         else:
             for item in self.importTree.selection():
                 self.file = self.importTree.item(item)["values"][0]
@@ -89,7 +90,6 @@ class k4tress_tk(Tkinter.Frame):
         webbrowser.open_new_tab('https://github.com/trvon/SpaceSecure')
 
     # Changes the password of device that is accessible
-    # NEEDS TO BE SETUP
     def PasswordButton(self):
         self.password = self.entryPassword.get()
         self.passSubmit(self.password)
@@ -148,17 +148,16 @@ class k4tress_tk(Tkinter.Frame):
     # TODO: Needs to be fixed
     # hides all secure entries from the tree
     def OnHideClick(self):
-        for item in self.tree.get_children():
-            if backend.secureTest(self.tree.item(item)["values"][0]):
-                self.variable.set('Tested Devices is Secure')
-                self.treeview.item(item)["values"][3].append("Secured")
-            else:
-                self.variable.set('Tested Devices is Unsecure')
-                self.tree.item(item)["values"][3].append("Unsecured")
-
-        # self.variable.set()
-        # Add function where label is set to Username and Password
-        # Scripted used to successfully get into device
+        if str(self.tree.selection()) == "":
+            self.variable.set("No Item Selected")
+        else:
+            for item in self.tree.selection():
+                if backend.secureTest(self.tree.item(item)["values"][0]):
+                    self.variable.set('Tested Devices is Secure')
+                    self.treeview.item(item)["values"][3].append("Secured")
+                else:
+                    self.variable.set('Tested Devices is Unsecure')
+                    self.tree.item(item)["values"][3].append("Unsecured")
 
     # Some Appearance modifications
     def createWidgits(self):
@@ -172,7 +171,7 @@ class k4tress_tk(Tkinter.Frame):
         # Column Configuration
         top.columnconfigure(0, weight=1)
         top.columnconfigure(2, weight=0)
-        top.columnconfigure(3, weight=1)
+        top.columnconfigure(3, weight=0)
         top.columnconfigure(4, weight=0)
         self.columnconfigure(0, weight=1, uniform=True)
         # Default alert bar settings
@@ -226,7 +225,7 @@ class k4tress_tk(Tkinter.Frame):
         self.entry = Tkinter.Entry(
             self.parent, textvariable=self.entryVariable)
         # Search and Status of Search
-        Label(self.parent, textvariable=self.variable, relief=Tkinter.SUNKEN,
+        Label(self.parent, textvariable=self.variable, width=75, relief=Tkinter.SUNKEN,
               font=self.bigFont).grid(row=0, column=0, sticky='wnes')
         self.entry.grid(
             column=3, columnspan=4, row=0, rowspan=1, sticky='nesw')
