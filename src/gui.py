@@ -129,6 +129,11 @@ class k4tress_tk(Tkinter.Frame):
     # Search Function
     def SearchOnEnter(self, event):
         global findItem
+        # Removes selected Items
+        for branch in self.tree.selection():
+            self.tree.selection_remove(branch)
+
+        # Selects found items fitting the search
         findItem = self.entryVariable.get().lower()
         notFound = True
         treeContent = self.tree.get_children()
