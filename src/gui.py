@@ -126,6 +126,10 @@ class k4tress_tk(Tkinter.Frame):
             compare = True
         return compare
 
+    # Clears text in search bar
+    def clearSearch(self):
+        self.entry.delete(0, 'end')
+
     # Search Function
     def SearchOnEnter(self, event):
         global findItem
@@ -136,6 +140,7 @@ class k4tress_tk(Tkinter.Frame):
         # Selects found items fitting the search
         findItem = self.entryVariable.get().lower()
         notFound = True
+        self.clearSearch()
         treeContent = self.tree.get_children()
         for branch in treeContent:
             if self.searchItem(branch, findItem):
