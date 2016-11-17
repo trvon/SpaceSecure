@@ -144,6 +144,7 @@ class k4tress_tk(Tkinter.Frame):
         # Selects found items fitting the search
         findItem = self.entryVariable.get().lower()
         notFound = True
+        itemCount = 0
         treeContent = self.tree.get_children()
         for branch in treeContent:
             if self.searchItem(branch, findItem):
@@ -151,7 +152,8 @@ class k4tress_tk(Tkinter.Frame):
                 self.tree.focus(branch)
                 self.tree.selection_add(branch)
                 self.tree.see(self.tree.selection()[0])
-                self.variable.set('Item Found!')
+                itemCount += 1
+                self.variable.set('Item\'(s) Found: ' + str(itemCount))
                 # self.tree.focus_set()
                 # self.verticle.activate(self.verticle, self.itemLocation)
                 notFound = False
