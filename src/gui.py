@@ -128,7 +128,7 @@ class k4tress_tk(Tkinter.Frame):
 
     # Clears text in search bar
     def clearSearch(self):
-        self.entry.delete(0, 'end')
+        self.entrySearch.delete(0, 'end')
 
     # Search Function
     def SearchOnEnter(self, event):
@@ -140,7 +140,6 @@ class k4tress_tk(Tkinter.Frame):
         # Selects found items fitting the search
         findItem = self.entryVariable.get().lower()
         notFound = True
-        self.clearSearch()
         treeContent = self.tree.get_children()
         for branch in treeContent:
             if self.searchItem(branch, findItem):
@@ -154,6 +153,7 @@ class k4tress_tk(Tkinter.Frame):
                 notFound = False
         if notFound:
             self.searchResult()
+        self.clearSearch()
 
     # TODO: Needs to be fixed
     # hides all secure entries from the tree
@@ -232,15 +232,15 @@ class k4tress_tk(Tkinter.Frame):
         # Search Bar
         # Device Search Entry Field
         self.entryVariable = Tkinter.StringVar()
-        self.entry = Tkinter.Entry(
+        self.entrySearch = Tkinter.Entry(
             self.parent, textvariable=self.entryVariable)
         # Search and Status of Search
         Label(self.parent, textvariable=self.variable, width=75, relief=Tkinter.SUNKEN,
               font=self.bigFont).grid(row=0, column=0, sticky='wnes')
-        self.entry.grid(
+        self.entrySearch.grid(
             column=3, columnspan=4, row=0, rowspan=1, sticky='nesw')
-        self.entry.bind('<Enter>', self.defaultSearch)
-        self.entry.bind('<Return>', self.SearchOnEnter)
+        self.entrySearch.bind('<Enter>', self.defaultSearch)
+        self.entrySearch.bind('<Return>', self.SearchOnEnter)
 
         # Password Field
         # Password Entry Field
