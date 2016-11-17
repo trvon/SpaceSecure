@@ -23,7 +23,9 @@ Drammer: A bot used to control android devices. More info on this can be found o
 
 
 ## Support
-The program is supportable on linux devices and an windows machine with a command terminal emulator equipped with the correct scan utilities.
+This Program Currently is comfirmed to only work with Linux
+###Disclaimer:
+Windows Machines with a robust arp scan library may work as well
 
 ## Future Functionality
 - [x] Add support for easy script import
