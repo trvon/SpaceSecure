@@ -89,6 +89,10 @@ class k4tress_tk(Tkinter.Frame):
     def info(self):
         webbrowser.open_new_tab('https://github.com/trvon/SpaceSecure')
 
+    # Clears password field
+    def clearPassword(self, event):
+        self.entry.delete(0, 'end')
+
     # Changes the password of device that is accessible
     def PasswordButton(self):
         self.password = self.entryPassword.get()
@@ -241,6 +245,7 @@ class k4tress_tk(Tkinter.Frame):
             column=3, columnspan=4, row=0, rowspan=1, sticky='nesw')
         self.entrySearch.bind('<Enter>', self.defaultSearch)
         self.entrySearch.bind('<Return>', self.SearchOnEnter)
+        self.entrySearch.focus_set()
 
         # Password Field
         # Password Entry Field
@@ -250,13 +255,13 @@ class k4tress_tk(Tkinter.Frame):
         self.entry.grid(column=4, row=7, columnspan=4, sticky='new')
         self.entryPassword.set(u"Enter New Password!")
         self.entry.bind("<Return>", self.PasswordEnter)
+        self.entry.bind('<FocusIn>', self.clearPassword)
 
         # Button to Submit password to Devices in SQL Database
         button = Tkinter.Button(
             self.parent, text=u"Submit Password", command=self.PasswordButton)
         button.grid(column=4, columnspan=3, row=6, sticky='swe')
         # Auto selects the text field
-        self.entry.focus_set()
         self.entry.selection_range(0, Tkinter.END)
 
         # Secure Toggle
