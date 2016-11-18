@@ -1,10 +1,12 @@
+"""Thanks for looking under the hood."""
+
 # !/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
 # Authors: Rahul, Trvon, and Parker
 # Contributors:
 
-import Tkinter
+import Tkinter as tkinter
 import tkFileDialog
 import os
 import ttk
@@ -17,38 +19,39 @@ import backend
 import password
 
 
-class k4tress_tk(Tkinter.Frame):
+class SpaceSecure(tkinter.Frame):
+    """class declaration of the object."""
 
     def __init__(self, parent):
-        # Variables for testing
+        """Creation."""
+        tkinter.Frame.__init__(self, parent)
+        self.variable = tkinter.StringVar()
         global top
         global password
         global treeContent
         global current
-        Tkinter.Frame.__init__(self, parent)
-        self.variable = Tkinter.StringVar()
         self.parent = parent
         self.grid(sticky='nwes')
         # Sets up features
         self.initialize()
-        self.createWidgits()
+        self.createwidgits()
         backend.initialSetup()
         # Menu Support
         self.master.config(menu=self.menubar)
 
-    # Importing scripts support to backend
     def script(self):
+        """Importing scripts support to backend."""
         # Code for importing scripts goes here
         self.ftypes = [('Python Scripts', '*.py'), ('Shell Scripts', '*.sh'),
                        ('C Scripts', '*.c')]
         dlg = tkFileDialog.Open(self, filetypes=self.ftypes)
         fm = dlg.show()
-        # File Menu
+        # File Menus
         if fm != ' ':
             self.script = self.readscript(fm)
 
-    # For all the selected Devices all selected scripts against the devices
-    def runScript(self):
+    def runscript(self):
+        """Function runs scripts against selected devices."""
         cred = password.checkroot()
         if cred != 0:
             for item in self.importTree.selection():
@@ -66,76 +69,80 @@ class k4tress_tk(Tkinter.Frame):
                     # Pass to backend with username and password
                     backend.scriptrun(self.file, self.device)
 
-    # Reloads previously imported scripts or scripts in folder
-    def reloadScripts(self):
+    def reloascripts(self):
+        """Function reloads previously imported scripts."""
         for file in os.listdir("../src/import/"):
             self.name = os.path.basename(file)
             self.importTree.insert("", 0, values=self.name)
 
-    # Deletes scripts in the window and in the import directory
-    def scriptDelete(self):
+    def scriptdelete(self):
+        """Function deletes selected scripts globally."""
         for item in self.importTree.selection():
             self.file = self.importTree.item(item)["values"][0]
             os.remove('../src/import/' + self.file)
             self.importTree.delete(item)
 
-    # Should probally pass file to the backend
     def readscript(self, filename):
+        """Should probally pass file to the backend."""
         self.file = os.path.basename(filename)
         backend.importscript(filename, self.file)
         self.importTree.insert("", 0, values=self.file)
 
-    # Opens Github Repo until popup info window is configured
+    # Need to create an about popup informational page
     def info(self):
+        """Function opens Github Repo."""
         webbrowser.open_new_tab('https://github.com/trvon/SpaceSecure')
 
-    # Clears password field
-    def clearPassword(self, event):
+    def clearpassword(self, event):
+        """Function clears password field."""
         self.entry.delete(0, 'end')
 
-    # Changes the password of device that is accessible
-    def PasswordButton(self):
+    def passwordbutton(self):
+        """Function should change device password."""
+        self.password = self.entryPassword.get()
+        self.passsubmit(self.password)
+
+    def passwordenter(self, event):
+        """Button linking to field, need to condense."""
         self.password = self.entryPassword.get()
         self.passSubmit(self.password)
 
-    # Button linking to field, need to condense
-    def PasswordEnter(self, event):
-        self.password = self.entryPassword.get()
-        self.passSubmit(self.password)
-
-    # Connects Password Submit field to button
-    def passSubmit(self, password):
+    def passsubmit(self, password):
+        """Function connects Password Submit field to button."""
         backend.updatePasswords(
             (self.tree.item(self.tree.focus())['values'][0], password))
         # should indicate this some other way since the button is reclickable
         self.labelVariable.set(password +
                                "Submitted the password!")
 
-    # Search Bar alert functions
-    def searchResult(self):
+    def searchresult(self):
+        """Search Bar alert functions."""
         self.variable.set('Sorry, item not found!')
 
-    # Sets search bar back to default
-    def defaultSearch(self, event):
+    # Cosmetic function
+    def defaultsearch(self, event):
+        """Function sets search bar back to default."""
         self.variable.set('Search Ready!')
 
-    # Condense the compare of search
-    def searchItem(self, branch, findItem):
+    # This was to short code used in other search function
+    def searchitem(self, branch, finditem):
+        """Condense the compare of search."""
         compare = False
-        columnOne = self.tree.item(branch)["values"][0].lower()
-        columnTwo = self.tree.item(branch)["values"][1].lower()
-        columnThree = self.tree.item(branch)["values"][2].lower()
-        if (columnOne.startswith(findItem) or columnTwo.startswith(findItem) or
-                columnThree.startswith(findItem)):
+        columnone = self.tree.item(branch)["values"][0].lower()
+        columntwo = self.tree.item(branch)["values"][1].lower()
+        columnthree = self.tree.item(branch)["values"][2].lower()
+        if (columnone.startswith(finditem) or columntwo.startswith(finditem) or
+                columnthree.startswith(finditem)):
             compare = True
         return compare
 
-    # Clears text in search bar
-    def clearSearch(self):
+    def clearsearch(self):
+        """Function clears text in search bar."""
         self.entrySearch.delete(0, 'end')
 
     # Search Function
-    def SearchOnEnter(self, event):
+    def searchonenter(self, event):
+        """Function controls program search bar."""
         global findItem
         # Removes selected Items
         for branch in self.tree.selection():
@@ -143,27 +150,26 @@ class k4tress_tk(Tkinter.Frame):
 
         # Selects found items fitting the search
         findItem = self.entryVariable.get().lower()
-        notFound = True
-        itemCount = 0
-        treeContent = self.tree.get_children()
-        for branch in treeContent:
-            if self.searchItem(branch, findItem):
+        notfound = True
+        itemcount = 0
+        treecontent = self.tree.get_children()
+        for branch in treecontent:
+            if self.searchitem(branch, findItem):
                 # self.itemLocation = self.treeview.index(branch)
                 self.tree.focus(branch)
                 self.tree.selection_add(branch)
                 self.tree.see(self.tree.selection()[0])
-                itemCount += 1
-                self.variable.set('Item\'(s) Found: ' + str(itemCount))
-                # self.tree.focus_set()
-                # self.verticle.activate(self.verticle, self.itemLocation)
-                notFound = False
-        if notFound:
-            self.searchResult()
-        self.clearSearch()
+                itemcount += 1
+                self.variable.set('Item\'(s) Found: ' + str(itemcount))
+                notfound = False
+        if notfound:
+            self.searchresult()
+        self.clearsearch()
 
     # TODO: Needs to be fixed
     # hides all secure entries from the tree
-    def OnHideClick(self):
+    def onhideclick(self):
+        """Function runs scripts against toggled devices."""
         if str(self.tree.selection()) == "":
             self.variable.set("No Item Selected")
         else:
@@ -176,7 +182,8 @@ class k4tress_tk(Tkinter.Frame):
                     self.tree.item(item)["values"][3].append("Unsecured")
 
     # Some Appearance modifications
-    def createWidgits(self):
+    def createwidgits(self):
+        """Function Initializes some appearance features."""
         top = self.winfo_toplevel()
         # Resizable settings
         # Row Configurations
@@ -194,19 +201,20 @@ class k4tress_tk(Tkinter.Frame):
         self.variable.set('Search Ready!')
         # Menu Functionality
         # Functionality for importing script
-        self.menubar = Menu(master=self, relief=Tkinter.RAISED)
+        self.menubar = Menu(master=self, relief=tkinter.RAISED)
         self.filemenu = Menu(self.menubar, tearoff=0)
         # Menu Buttons
-        self.menubar.add_command(label="Scan", command=self.OnScan)
+        self.menubar.add_command(label="Scan", command=self.onscan)
         self.menubar.add_separator()
         self.menubar.add_cascade(label="Options", menu=self.filemenu)
         self.filemenu.add_command(label="Scripts", command=self.script)
         self.filemenu.add_command(label="Info", command=self.info)
         # Adds previously loaded scripts to Tree
-        self.reloadScripts()
+        self.reloadscripts()
 
     # Start Network Scan
-    def OnScan(self):
+    def onscan(self):
+        """Function starts network scan."""
         self.treeContents = backend.getDeviceList()
         # Clears Tree so tree doesn't duplicate
         for i in self.tree.get_children():
@@ -218,6 +226,7 @@ class k4tress_tk(Tkinter.Frame):
 
     # GUI settings
     def initialize(self):
+        """Everything else appearance."""
         # Appearance
         self.bigFont = tkFont.Font(family='times', size=13)
         self.option_add('*Button*font', self.bigFont)
@@ -237,43 +246,44 @@ class k4tress_tk(Tkinter.Frame):
 
         # Search Bar
         # Device Search Entry Field
-        self.entryVariable = Tkinter.StringVar()
-        self.entrySearch = Tkinter.Entry(
+        self.entryVariable = tkinter.StringVar()
+        self.entrySearch = tkinter.Entry(
             self.parent, textvariable=self.entryVariable)
         # Search and Status of Search
-        Label(self.parent, textvariable=self.variable, width=75, relief=Tkinter.SUNKEN,
-              font=self.bigFont).grid(row=0, column=0, sticky='wnes')
+        Label(self.parent, textvariable=self.variable, width=75,
+              relief=tkinter.SUNKEN, font=self.bigFont).grid(row=0, column=0,
+                                                             sticky='wnes')
         self.entrySearch.grid(
             column=3, columnspan=4, row=0, rowspan=1, sticky='nesw')
-        self.entrySearch.bind('<Enter>', self.defaultSearch)
-        self.entrySearch.bind('<Return>', self.SearchOnEnter)
+        self.entrySearch.bind('<Enter>', self.defaultsearch)
+        self.entrySearch.bind('<Return>', self.searchonenter)
         self.entrySearch.focus_set()
 
         # Password Field
         # Password Entry Field
-        self.entryPassword = Tkinter.StringVar()
-        self.entry = Tkinter.Entry(
+        self.entryPassword = tkinter.StringVar()
+        self.entry = tkinter.Entry(
             self.parent, textvariable=self.entryPassword)
         self.entry.grid(column=4, row=7, columnspan=4, sticky='new')
         self.entryPassword.set(u"Enter New Password!")
-        self.entry.bind("<Return>", self.PasswordEnter)
-        self.entry.bind('<FocusIn>', self.clearPassword)
+        self.entry.bind("<Return>", self.passwordenter)
+        self.entry.bind('<FocusIn>', self.clearpassword)
 
         # Button to Submit password to Devices in SQL Database
-        button = Tkinter.Button(
-            self.parent, text=u"Submit Password", command=self.PasswordButton)
+        button = tkinter.Button(
+            self.parent, text=u"Submit Password", command=self.passwordbutton)
         button.grid(column=4, columnspan=3, row=6, sticky='swe')
         # Auto selects the text field
-        self.entry.selection_range(0, Tkinter.END)
+        self.entry.selection_range(0, tkinter.END)
 
         # Secure Toggle
         # Button to hide secure entries, cleaning up the view
-        hide = Tkinter.Button(
-            self.parent, text=u"Check Device", command=self.OnHideClick)
+        hide = tkinter.Button(
+            self.parent, text=u"Check Device", command=self.onhideclick)
         # may need to reposition button within GUI
         hide.grid(column=4, columnspan=3, row=1, sticky='nwe')
-        delete = Tkinter.Button(self.parent, text=u"Delete Script",
-                                command=self.scriptDelete,)
+        delete = tkinter.Button(self.parent, text=u"Delete Script",
+                                command=self.scriptdelete,)
         delete.grid(column=4, row=2, columnspan=3, sticky='nsew')
 
         # IMPORTED SCRIPT FILE VIEW
@@ -291,9 +301,9 @@ class k4tress_tk(Tkinter.Frame):
         self.importTree.column("Scripts", stretch=True)
         self.importTree.column('#0', width=0)
         # Button For Starting import scripts
-        startScript = Tkinter.Button(
-            self.parent, text=u"Run Script", command=self.runScript,)
-        startScript.grid(column=4, columnspan=3, row=3, sticky='nswe')
+        self.startScript = tkinter.Button(
+            self.parent, text=u"Run Script", command=self.runscript,)
+        self.startScript.grid(column=4, columnspan=3, row=3, sticky='nswe')
 
         # TREE/DATABASE CONFIG
         # Tree scroll bar
@@ -316,9 +326,10 @@ class k4tress_tk(Tkinter.Frame):
 
 
 def main():
-    root = Tkinter.Tk()
+    """And here is the main."""
+    root = tkinter.Tk()
     root.geometry('{}x{}'.format(900, 420))
-    d = k4tress_tk(root)
+    d = SpaceSecure(root)
     root.mainloop()
 
 if __name__ == "__main__":
