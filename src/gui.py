@@ -69,7 +69,7 @@ class SpaceSecure(tkinter.Frame):
                     # Pass to backend with username and password
                     backend.scriptrun(self.file, self.device)
 
-    def reloascripts(self):
+    def reloadscripts(self):
         """Function reloads previously imported scripts."""
         for file in os.listdir("../src/import/"):
             self.name = os.path.basename(file)
