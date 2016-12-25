@@ -6,12 +6,7 @@
 # Authors: Rahul, Trvon, and Parker
 # Contributors:
 
-try:
-    ''' Python 2 '''
-    import Tkinter as tkinter
-except ImportError:
-    ''' Python 3 '''
-    import tkinter
+import Tkinter as tkinter
 
 import tkFileDialog
 import os
