@@ -1,0 +1,6 @@
+language: bash
+before install:
+  - sudo apt-get install arp-scan
+  - sudo apt-get install sshpass
+ sudo: required
+ os: linux
