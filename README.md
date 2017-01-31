@@ -38,6 +38,6 @@ Windows Machines with a robust arp scan library may work as well
 Authors
 - [GitHub] (https://github.com/Paxion42) Paxion42
 - [GitHub] (https://github.com/rahulr56) Rahul
-- [GitHub] (https://github.com/Tremaux) Tremaux
+- [GitHub] (https://github.com/Tremaux) Trvon
 
 Created at HackNC
