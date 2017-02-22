@@ -78,7 +78,8 @@ def loadCredFromFile():
 def initialSetup():
     # __commonAuthSetup()
     # global authDatabase = "AuthPairs.txt"
-    print " "
+    return
+    #print " "
 
 
 # called by frontend to write a txt file of scanned devices on the network

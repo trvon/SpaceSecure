@@ -1,8 +1,12 @@
-import Tkinter
-# import tkMessageBox
+# Password menu
+try:
+    # Python 2
+    import Tkinter as tkinter
+except ImportError:
+    # Python 3
+    import tkinter
 
-
-class Menu(Tkinter.Frame):
+class Menu(tkinter.Frame):
 
     global cred
 

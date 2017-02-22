@@ -7,10 +7,12 @@ function trap_ctrlc
     echo -e "Ctrl-C caught...performing clean up\n"
 
     # perform cleanup here
-    rm -rf ./*.pyc ./*.txt
-    # exit shell script with error code 2
-    # if omitted, shell script will continue execution
-    echo "Clean up finished!"
+    if [ -f ./*.pyc ] || [ -f ./*.txt ] ; then
+		rm -rf ./*.pyc ./*.txt
+    	# exit shell script with error code 2
+    	# if omitted, shell script will continue execution
+    	echo "Clean up finished!"
+	fi
     echo "Exitting!!"
     exit 130
 }
@@ -20,16 +22,18 @@ function checkCompatability
     #Check if arp-scan is installed on the system
     which arp-scan > /dev/null
     if [ $? -ne 0 ];then
-        echo "Install arp-scan and then try again!"
+        echo -e "\nInstall arp-scan and then try again!"
         exit 1
     fi
 
     #check if sshpass is installed on the system
     which sshpass > /dev/null
     if [ $? -ne 0 ];then
-        echo "Install sshpass and then try again!"
+        echo "\nInstall sshpass and then try again!"
         exit 0
     fi
+	
+	# Checks if tkinter is installed
 }
 
 function main
@@ -39,11 +43,16 @@ function main
     
     checkCompatability
     #Compile all python files and move it to build Directory
-    python -m compileall ../src/
-    mv -f ../src/*.pyc .
+    python -O  -m compileall ../src/
+    if [ -d ../src/__pycache__ ] ; then 
+		mv -f ../src/__pycache__/*.pyc .
+	else
+		mv -f ../src/*.pyc .
+	fi
     
     #Start the Application
-    python gui.pyc #2>/dev/null
+	gui=$(ls | grep gui)
+	python $gui #2>/dev/null
 
     #Normal Clean Up once the application is closed
     rm -rf *.pyc *.txt

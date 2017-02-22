@@ -1,10 +1,15 @@
 # !/usr/bin/python
 # -*- coding: iso-8859-1 -*-
+try:
+    # Python 2
+    import Tkinter as tkinter
+    
+except ImportError:
+    # Python 3
+    import tkinter
+    from tkinter import messagebox
 
-import tkMessageBox
 import menu
-import Tkinter
-
 
 def checkroot():
     result = tkMessageBox.askyesno(

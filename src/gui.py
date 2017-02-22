@@ -6,18 +6,26 @@
 # Authors: Rahul, Trvon, and Parker
 # Contributors:
 
-import Tkinter as tkinter
+import sys
 
-import tkFileDialog
+try:
+    # Python 2
+    import Tkinter as tkinter
+    from tkinter import ttk, tkFileDialog
+    from tkinter import tkFont as font
+    import backend, password
+except ImportError:
+    # Python 3
+    import tkinter
+    from tkinter import ttk, font, filedialog
+    sys.path.append("../src")
+    import backend, password
+
+# import tkFileDialog
 import os
-import ttk
-import tkFont
 import webbrowser
 
-from Tkinter import Label, Menu
-
-import backend
-import password
+from tkinter import Label, Menu
 
 
 class SpaceSecure(tkinter.Frame):
@@ -100,6 +108,7 @@ class SpaceSecure(tkinter.Frame):
 
     def passwordbutton(self):
         """Function should change device password."""
+        self.password = self.entryPassword.get()
         self.password = self.entryPassword.get()
         self.passsubmit(self.password)
 
@@ -229,7 +238,7 @@ class SpaceSecure(tkinter.Frame):
     def initialize(self):
         """Everything else appearance."""
         # Appearance
-        self.bigFont = tkFont.Font(family='times', size=13)
+        self.bigFont = font.Font(family='times', size=13)
         self.option_add('*Button*font', self.bigFont)
         # Main from settings
         self.parent.resizable(True, True)
@@ -277,7 +286,6 @@ class SpaceSecure(tkinter.Frame):
         # Auto selects the text field
         self.entry.selection_range(0, tkinter.END)
 
-        # Secure Toggle
         # Button to hide secure entries, cleaning up the view
         hide = tkinter.Button(
             self.parent, text=u"Check Device", command=self.onhideclick)
