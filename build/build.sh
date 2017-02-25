@@ -29,11 +29,11 @@ function checkCompatability
     #check if sshpass is installed on the system
     which sshpass > /dev/null
     if [ $? -ne 0 ];then
-        echo "\nInstall sshpass and then try again!"
+        echo -e "\nInstall sshpass and then try again!"
         exit 0
     fi
 	
-	# Checks if tkinter is installed
+	# Check if tkinter is installed
 }
 
 function main

@@ -7,7 +7,7 @@ try:
 except ImportError:
     # Python 3
     import tkinter
-    from tkinter import messagebox
+    from tkinter import messagebox as tkMessageBox
 
 import menu
 

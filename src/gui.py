@@ -17,7 +17,7 @@ try:
 except ImportError:
     # Python 3
     import tkinter
-    from tkinter import ttk, font, filedialog
+    from tkinter import ttk, font, filedialog as tkFileDialog
     sys.path.append("../src")
     import backend, password
 
@@ -189,7 +189,7 @@ class SpaceSecure(tkinter.Frame):
                     self.treeview.item(item)["values"][3].append("Secured")
                 else:
                     self.variable.set('Tested Devices is Unsecure')
-                    self.tree.item(item)["values"][3].append("Unsecured")
+                    self.tree.item(item)["values"][3]="Unsecured"
 
     # Some Appearance modifications
     def createwidgits(self):
