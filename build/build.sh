@@ -33,7 +33,11 @@ function checkCompatability
         exit 0
     fi
 	
-	# Check if tkinter is installed
+    # which python-tk > /dev/null
+    #if [ $? -ne 0 ]; then 
+    #    echo -e "\nInstall python-tk and then try again"
+    #    exit 0
+    #fi
 }
 
 function main
@@ -43,12 +47,16 @@ function main
     
     checkCompatability
     #Compile all python files and move it to build Directory
-    python -O  -m compileall ../src/
+    python -m compileall ../src/*
     if [ -d ../src/__pycache__ ] ; then 
 		mv -f ../src/__pycache__/*.pyc .
 	else
 		mv -f ../src/*.pyc .
 	fi
+    
+    if [ ! -d ../src/import  ]; then
+        mkdir ../src/import
+    fi
     
     #Start the Application
 	gui=$(ls | grep gui)

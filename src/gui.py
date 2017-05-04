@@ -8,16 +8,18 @@
 
 import sys
 
-try:
+if sys.version_info[0] < 3:
     # Python 2
     import Tkinter as tkinter
-    from tkinter import ttk, tkFileDialog
-    from tkinter import tkFont as font
+    import ttk
+    import tkFileDialog
+    import tkFont as font
     import backend, password
-except ImportError:
+    from Tkinter import Label, Menu
+else:
     # Python 3
     import tkinter
-    from tkinter import ttk, font, filedialog as tkFileDialog
+    from tkinter import ttk, font, filedialog as tkFileDialog, Label, Menu
     sys.path.append("../src")
     import backend, password
 
@@ -25,7 +27,6 @@ except ImportError:
 import os
 import webbrowser
 
-from tkinter import Label, Menu
 
 
 class SpaceSecure(tkinter.Frame):
