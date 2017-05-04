@@ -3,4 +3,5 @@ before install:
   - sudo apt-get install arp-scan
   - sudo apt-get install sshpass
  sudo: required
+ script: ./build/build.sh
  os: linux
