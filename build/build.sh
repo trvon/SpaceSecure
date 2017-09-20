@@ -7,7 +7,7 @@ function trap_ctrlc
     echo -e "Ctrl-C caught...performing clean up\n"
 
     # perform cleanup here
-    if [ -f ./*.pyc ] || [ -f ./*.txt ] ; then
+    if [[ -f ./*.pyc ]] || [[ -f ./*.txt ]] ; then
 		rm -rf ./*.pyc ./*.txt
     	# exit shell script with error code 2
     	# if omitted, shell script will continue execution

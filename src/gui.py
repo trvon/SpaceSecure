@@ -6,6 +6,7 @@
 # Authors: Rahul, Trvon, and Parker
 # Contributors:
 
+import thread
 import sys
 
 if sys.version_info[0] < 3:
@@ -215,7 +216,7 @@ class SpaceSecure(tkinter.Frame):
         self.menubar = Menu(master=self, relief=tkinter.RAISED)
         self.filemenu = Menu(self.menubar, tearoff=0)
         # Menu Buttons
-        self.menubar.add_command(label="Scan", command=self.onscan)
+        self.menubar.add_command(label="Scan", command=self.onscanThread)
         self.menubar.add_separator()
         self.menubar.add_cascade(label="Options", menu=self.filemenu)
         self.filemenu.add_command(label="Scripts", command=self.script)
@@ -224,6 +225,10 @@ class SpaceSecure(tkinter.Frame):
         self.reloadscripts()
 
     # Start Network Scan
+    def onscanThread(self):
+    	args = tuple()
+    	thread.start_new_thread(self.onscan, args )
+
     def onscan(self):
         """Function starts network scan."""
         self.treeContents = backend.getDeviceList()
