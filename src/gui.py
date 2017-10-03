@@ -6,8 +6,8 @@
 # Authors: Rahul, Trvon, and Parker
 # Contributors:
 
-import thread
 import sys
+import threading as thread
 
 if sys.version_info[0] < 3:
     # Python 2
@@ -15,19 +15,20 @@ if sys.version_info[0] < 3:
     import ttk
     import tkFileDialog
     import tkFont as font
-    import backend, password
-    from Tkinter import Label, Menu
+    import backend
+    import password
+    from tkinter import Label, Menu
 else:
     # Python 3
     import tkinter
     from tkinter import ttk, font, filedialog as tkFileDialog, Label, Menu
     sys.path.append("../src")
-    import backend, password
+    import backend
+    import password
 
 # import tkFileDialog
 import os
 import webbrowser
-
 
 
 class SpaceSecure(tkinter.Frame):
@@ -191,7 +192,7 @@ class SpaceSecure(tkinter.Frame):
                     self.treeview.item(item)["values"][3].append("Secured")
                 else:
                     self.variable.set('Tested Devices is Unsecure')
-                    self.tree.item(item)["values"][3]="Unsecured"
+                    self.tree.item(item)["values"][3] = "Unsecured"
 
     # Some Appearance modifications
     def createwidgits(self):
@@ -226,12 +227,18 @@ class SpaceSecure(tkinter.Frame):
 
     # Start Network Scan
     def onscanThread(self):
-    	args = tuple()
-    	thread.start_new_thread(self.onscan, args )
+        try:
+            self.p
+        except AttributeError:
+            self.variable.set('Now Scanning ...')
+            self.p = thread.Thread(target=self.onscan, args=())
+            self.p.start()
+        else:
+            self.variable.set('Already Scanning ...')
 
     def onscan(self):
         """Function starts network scan."""
-        self.treeContents = backend.getDeviceList()
+        self.treeContents=backend.getDeviceList()
         # Clears Tree so tree doesn't duplicate
         for i in self.tree.get_children():
             self.tree.delete(i)
@@ -239,12 +246,13 @@ class SpaceSecure(tkinter.Frame):
         for entry in self.treeContents:
             self.tree.insert(
                 "", 0, value=(entry[0], entry[1], entry[2], entry[3]))
+        self.variable.set('Scanning Finished ...')
 
     # GUI settings
     def initialize(self):
         """Everything else appearance."""
         # Appearance
-        self.bigFont = font.Font(family='times', size=13)
+        self.bigFont=font.Font(family='times', size=13)
         self.option_add('*Button*font', self.bigFont)
         # Main from settings
         self.parent.resizable(True, True)
@@ -252,18 +260,18 @@ class SpaceSecure(tkinter.Frame):
         self.parent.title("SpaceSecure")
         self.grid_columnconfigure(0, weight=1, minsize=25)
         # Tree Building
-        self.tree = ttk.Treeview(selectmode="extended", columns=(
+        self.tree=ttk.Treeview(selectmode="extended", columns=(
             'IP', 'MAC Address', 'Device', 'Security'), show="headings")
-        self.treeview = self.tree
+        self.treeview=self.tree
         # Script Tree
-        self.importTree = ttk.Treeview(selectmode="extended",
+        self.importTree=ttk.Treeview(selectmode="extended",
                                        column=('Scripts'), show="headings")
-        self.treeviewImport = self.tree
+        self.treeviewImport=self.tree
 
         # Search Bar
         # Device Search Entry Field
-        self.entryVariable = tkinter.StringVar()
-        self.entrySearch = tkinter.Entry(
+        self.entryVariable=tkinter.StringVar()
+        self.entrySearch=tkinter.Entry(
             self.parent, textvariable=self.entryVariable)
         # Search and Status of Search
         Label(self.parent, textvariable=self.variable, width=75,
@@ -277,8 +285,8 @@ class SpaceSecure(tkinter.Frame):
 
         # Password Field
         # Password Entry Field
-        self.entryPassword = tkinter.StringVar()
-        self.entry = tkinter.Entry(
+        self.entryPassword=tkinter.StringVar()
+        self.entry=tkinter.Entry(
             self.parent, textvariable=self.entryPassword)
         self.entry.grid(column=4, row=7, columnspan=4, sticky='new')
         self.entryPassword.set(u"Enter New Password!")
@@ -286,24 +294,24 @@ class SpaceSecure(tkinter.Frame):
         self.entry.bind('<FocusIn>', self.clearpassword)
 
         # Button to Submit password to Devices in SQL Database
-        button = tkinter.Button(
+        button=tkinter.Button(
             self.parent, text=u"Submit Password", command=self.passwordbutton)
         button.grid(column=4, columnspan=3, row=6, sticky='swe')
         # Auto selects the text field
         self.entry.selection_range(0, tkinter.END)
 
         # Button to hide secure entries, cleaning up the view
-        hide = tkinter.Button(
+        hide=tkinter.Button(
             self.parent, text=u"Check Device", command=self.onhideclick)
         # may need to reposition button within GUI
         hide.grid(column=4, columnspan=3, row=1, sticky='nwe')
-        delete = tkinter.Button(self.parent, text=u"Delete Script",
+        delete=tkinter.Button(self.parent, text=u"Delete Script",
                                 command=self.scriptdelete,)
         delete.grid(column=4, row=2, columnspan=3, sticky='nsew')
 
         # IMPORTED SCRIPT FILE VIEW
         # Scrollbar for script view window
-        self.scrollScript = ttk.Scrollbar(
+        self.scrollScript=ttk.Scrollbar(
             orient='vertical', command=self.importTree.yview)
         self.scrollScript.grid(
             row=4, rowspan=2, column=6, columnspan=1, sticky='nswe')
@@ -316,13 +324,13 @@ class SpaceSecure(tkinter.Frame):
         self.importTree.column("Scripts", stretch=True)
         self.importTree.column('#0', width=0)
         # Button For Starting import scripts
-        self.startScript = tkinter.Button(
+        self.startScript=tkinter.Button(
             self.parent, text=u"Run Script", command=self.runscript,)
         self.startScript.grid(column=4, columnspan=3, row=3, sticky='nswe')
 
         # TREE/DATABASE CONFIG
         # Tree scroll bar
-        self.verticle = ttk.Scrollbar(
+        self.verticle=ttk.Scrollbar(
             orient='vertical', command=self.tree.yview)
         self.verticle.grid(row=1, rowspan=6, column=3, sticky='nes')
         self.tree.grid(row=1, column=0, rowspan=6, columnspan=4, sticky='news')
@@ -342,9 +350,9 @@ class SpaceSecure(tkinter.Frame):
 
 def main():
     """And here is the main."""
-    root = tkinter.Tk()
+    root=tkinter.Tk()
     root.geometry('{}x{}'.format(900, 420))
-    d = SpaceSecure(root)
+    d=SpaceSecure(root)
     root.mainloop()
 
 if __name__ == "__main__":

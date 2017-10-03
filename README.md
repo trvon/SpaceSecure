@@ -8,6 +8,11 @@ Navigate to the build directory and execute the following command
 **./build.sh**
 - Will need to install tkinter
 
+## Dependencies
+- python-tk
+- sshpass
+- arp-scan
+
 ## About Importing Scripts
 When importing scripts, make sure the scripts can take input of the device that they are going to be pointed at. ( RIght now the IP address is what is being outputed to the scripts on the run command ) After import scripts, the user simple needs to select the script they would like to run and the device they would like to run it against. 
 
@@ -30,7 +35,7 @@ This Program Currently is comfirmed to only work with Linux
 - [ ] Working on adding default script library for testing in gui
 - [ ] UI overhaul for a more compact program
 - [ ] Add support for more devices, with a quick and easy install
-- [ ] Add threading
+- [x] Add threading
 
 ## Need to fix
 - Password checking 
