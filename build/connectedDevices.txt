@@ -1,4 +1,0 @@
-192.168.0.1	14:b7:f8:bf:39:c0	(Unknown)
-192.168.0.2	14:b7:f8:bf:39:c1	(Unknown)
-192.168.0.6	d0:50:99:aa:5e:a2	ASRock Incorporation
-192.168.0.4	78:f8:82:b7:25:e1	(Unknown)
