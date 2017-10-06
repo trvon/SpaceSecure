@@ -13,6 +13,9 @@ Navigate to the build directory and execute the following command
 - sshpass
 - arp-scan
 
+## Support
+This Program Currently is comfirmed to only work with Linux
+
 ## About Importing Scripts
 When importing scripts, make sure the scripts can take input of the device that they are going to be pointed at. ( RIght now the IP address is what is being outputed to the scripts on the run command ) After import scripts, the user simple needs to select the script they would like to run and the device they would like to run it against. 
 
@@ -24,10 +27,6 @@ When importing scripts, make sure the scripts can take input of the device that 
 Drammer: A bot used to control android devices. More info on this can be found on 
 1) https://www.vusec.net/projects/drammer/ 
 2) https://vvdveen.com/publications/drammer.pdf
-
-
-## Support
-This Program Currently is comfirmed to only work with Linux
 
 ## Future Functionality
 - [x] Add support for easy script import
@@ -41,8 +40,8 @@ This Program Currently is comfirmed to only work with Linux
 - Password checking 
 
 Authors
-- [GitHub] (https://github.com/Paxion42) Paxion42
-- [GitHub] (https://github.com/rahulr56) Rahul
-- [GitHub] (https://github.com/Tremaux) Trvon
+- [GitHub](https://github.com/Paxion42) Paxion42
+- [GitHub](https://github.com/rahulr56) Rahul
+- [GitHub](https://github.com/Tremaux) Trvon
 
 Created at HackNC
