@@ -1,7 +1,7 @@
 # SpaceSecure
 
 ## Idea
-The motivation behind SpaceSecure was to give network savvy and regular people an easy way to scan their network for vunerable IoT devices. SpaceSecure then tries to gain root access to the vunerable devices by trying to brute using defualt passwords and any similar hacker exploit imported.
+The motivation behind SpaceSecure was to give network savvy and regular people an easy way to scan their network for vunerable IoT devices. (Still being implemented) SpaceSecure then tries to gain root access to the vunerable devices by trying to brute using default passwords and any similar hacker exploit imported.
 
 ## Run the Application
 Navigate to the build directory and execute the following command 
@@ -44,4 +44,4 @@ Authors
 - [GitHub](https://github.com/rahulr56) Rahul
 - [GitHub](https://github.com/Tremaux) Trvon
 
-Created at HackNC
+Created at HackNC 2016
